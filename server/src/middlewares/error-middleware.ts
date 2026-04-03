@@ -14,7 +14,7 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Error interno del servidor',
-    // Solo mostramos el stack de error si no estamos en producción
+    // Solo mostramos el stack de error si no estamos en producción/*SUGERIDO POR GEMINI*/
     stack: process.env.NODE_ENV === 'production' ? null : err.stack 
   });
 };
