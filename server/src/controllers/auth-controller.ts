@@ -77,7 +77,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {
     // 1. Extraemos el id del token (inyectado por el middleware)
-    // Usamos 'as any' para evitar problemas de tipos con req.user
+    // Usamos 'as any' para evitar problemas de tipos con req.user /*sugerido por Gemini*/
     const userId = (req as any).user?.userId;
 
     if (!userId) {
