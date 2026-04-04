@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db-connection';
 import authRouter from './routes/auth-routes'
+import wodRouter from './routes/wod-routes'
 import { notFound, errorHandler } from './middlewares/error-middleware';
 import debug from 'debug';
 
@@ -28,6 +29,7 @@ const startServer = async () => {
 
     // ─── Routes ───────────────────────────────────────────────────────────────────
     app.use('/api/v1/auth', authRouter);
+    app.use('/api/v1/wods', wodRouter);
     // ----------------------------------
 
     // 3. Manejo de Error 404 - Ruta no encontrada (Requisito: Middlewares)
