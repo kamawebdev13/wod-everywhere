@@ -3,6 +3,7 @@ setServers(["1.1.1.1", "8.8.8.8"])
 
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import debug from 'debug';
 import { connectDB } from '../config/db-connection';
 import { Wod } from '../models/wod-model';
 import { Workout } from '../models/workout-model';
@@ -145,38 +146,39 @@ const users = [
 ];
 
 // ─── Sembrado de la base de datos ─────────────────────────────────────────────────────────────
+// Inicializamos el logger de debug con un namespace específico
+const log = debug('app:seed');
+
 const seed = async () => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        console.log('🌱 Seeding database...');
+    log('Seeding database...');
 
-        // 1. Limpiamos la data existente para evitar duplicados
-        await Wod.deleteMany({});
-        await Workout.deleteMany({});
-        await User.deleteMany({});
+    // 1. Limpieza de datos
+    await Wod.deleteMany({});
+    await Workout.deleteMany({});
+    await User.deleteMany({});
 
-        // 2. Insertamos los WODs (Usamos el array de datos, no el modelo)
-        await Wod.insertMany(wods);
-        console.log(`✅ ${wods.length} WODs inserted`);
+    // 2. Inserción de WODs
+    await Wod.insertMany(wods);
+    log('%d WODs inserted successfully', wods.length);
 
-        // 3. Insertamos los usuarios
-        // Usamos User.create para que se ejecute el middleware 'pre-save' de bcrypt
-        for (const userData of users) {
-            await User.create(userData);
-        }
-        console.log(`✅ ${users.length} users inserted`);
-
-        console.log('\n📋 Test credentials:');
-        console.log('  admin@wodeverywhere.com / Admin1234!');
-        console.log('  test@wodeverywhere.com  / Test1234!');
-        console.log('  athlete@wodeverywhere.com / Athlete1234!');
-
-        await mongoose.connection.close();
-        process.exit(0);
-        
-    } catch (error) {
-        console.error('❌ Error seeding database:', error);
-        process.exit(1);
+    // 3. Inserción de Usuarios
+    for (const userData of users) {
+      await User.create(userData);
     }
+    log('%d users inserted successfully', users.length);
+
+    log('Test credentials ready for: admin@wodeverywhere.com, test@wodeverywhere.com, athlete@wodeverywhere.com');
+
+    await mongoose.connection.close();
+    process.exit(0);
+
+  } catch (error) {
+    log('Error seeding database: %O', error);
+    process.exit(1);
+  }
 };
+
+void seed();
