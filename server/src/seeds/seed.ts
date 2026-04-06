@@ -4,6 +4,7 @@ setServers(["1.1.1.1", "8.8.8.8"])
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import debug from 'debug';
+import bcrypt from 'bcrypt';
 import { connectDB } from '../config/db-connection';
 import { Wod } from '../models/wod-model';
 import { Workout } from '../models/workout-model';
@@ -150,35 +151,40 @@ const users = [
 const log = debug('app:seed');
 
 const seed = async () => {
-  try {
-    await connectDB();
+    try {
+        await connectDB();
 
-    log('Seeding database...');
+        log('Seeding database...');
 
-    // 1. Limpieza de datos
-    await Wod.deleteMany({});
-    await Workout.deleteMany({});
-    await User.deleteMany({});
+        // 1. Limpieza de datos
+        await Wod.deleteMany({});
+        await Workout.deleteMany({});
+        await User.deleteMany({});
 
-    // 2. Inserción de WODs
-    await Wod.insertMany(wods);
-    log('%d WODs inserted successfully', wods.length);
+        // 2. Inserción de WODs
+        await Wod.insertMany(wods);
+        log('%d WODs inserted successfully', wods.length);
 
-    // 3. Inserción de Usuarios
-    for (const userData of users) {
-      await User.create(userData);
+        // 3. Inserción de Usuarios
+        for (const userData of users) {
+            const hashed = await bcrypt.hash(userData.password, 10);
+            await User.create({
+                name: userData.email.split('@')[0], // nombre temporal
+                email: userData.email,
+                password: hashed
+            });
+        }
+        log('%d users inserted successfully', users.length);
+
+        log('Test credentials ready for: admin@wodeverywhere.com, test@wodeverywhere.com, athlete@wodeverywhere.com');
+
+        await mongoose.connection.close();
+        process.exit(0);
+
+    } catch (error) {
+        log('Error seeding database: %O', error);
+        process.exit(1);
     }
-    log('%d users inserted successfully', users.length);
-
-    log('Test credentials ready for: admin@wodeverywhere.com, test@wodeverywhere.com, athlete@wodeverywhere.com');
-
-    await mongoose.connection.close();
-    process.exit(0);
-
-  } catch (error) {
-    log('Error seeding database: %O', error);
-    process.exit(1);
-  }
 };
 
 void seed();
