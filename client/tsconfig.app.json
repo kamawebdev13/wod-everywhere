@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "es2023",
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "esnext",
     "types": ["vite/client"],
     "skipLibCheck": true,
 
+    /* Configuración para Importaciones Absolutas */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "ignoreDeprecations": "6.0",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",

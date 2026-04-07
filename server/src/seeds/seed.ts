@@ -165,7 +165,7 @@ const seed = async () => {
         await Wod.insertMany(wods);
         log('%d WODs inserted successfully', wods.length);
 
-        // 3. Inserción de Usuarios
+        // 3. Inserción de Usuarios con encriptado de contraseña del usuario
         for (const userData of users) {
             const hashed = await bcrypt.hash(userData.password, 10);
             await User.create({
