@@ -8,7 +8,7 @@ import { ROUTES } from '@/const/routes';
 
 // 1. Carga Perezosa (Lazy Loading): Solo descargan el JS cuando se entra a la ruta
 // Importante: El componente debe ser el 'default export' en su archivo
-const LandingPage = lazy(() => import('@/pages/landing'));
+const LandingPage = lazy(() => import('@/pages/landing-page'));
 // const LoginPage = lazy(() => import('@/pages/login-page'));
 // const HomePage = lazy(() => import('@/pages/home-page'));
 // const HistoryPage = lazy(() => import('@/pages/history-page'));

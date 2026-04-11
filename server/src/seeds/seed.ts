@@ -19,8 +19,8 @@ const wods = [
         title: "Gym Beast Mode",
         type: "EMOM 15",
         location: ["gym", "box"],
-        equipment: ["barbell", "pull-up bar"],
-        target: ["legs", "back"],
+        equipment: ["barbell", "pullup_bar"],
+        target: ["legs", "upper"],
         exercises: [
             { name: "Back Squat", reps: 10, weight: "60kg" },
             { name: "Pull-ups", reps: 10, weight: "Bodyweight" }
@@ -31,7 +31,7 @@ const wods = [
         title: "Mountain Warrior",
         type: "For Time",
         location: ["mountains"],
-        equipment: ["none"],
+        equipment: ["none", "bodyweight"],
         target: ["legs", "cardio"],
         exercises: [
             { name: "Hill Sprints", reps: 5, weight: "Bodyweight" },
@@ -44,7 +44,7 @@ const wods = [
         title: "Beach Burner",
         type: "Tabata",
         location: ["beach"],
-        equipment: ["none"],
+        equipment: ["none", "bodyweight"],
         target: ["fullbody", "cardio"],
         exercises: [
             { name: "Sand Run", reps: 1, weight: "60s" },
