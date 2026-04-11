@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { Dumbbell, Compass, BarChart2 } from 'lucide-react';
 import { ROUTES } from '@/const/routes';
 import { Button } from '@/components/ui/button';
-import FeatureCard  from '@/components/common/feature-card';
+import FeatureCard from '@/components/common/feature-card';
+import { HERO_KETTLEBELL_URL } from '@/const/images';
 
 const Landing = () => {
   return (
@@ -12,7 +13,7 @@ const Landing = () => {
       <section className="w-full max-w-md px-6 pt-12 pb-8 flex flex-col items-center text-center">
         <div className="w-full aspect-square rounded-lg overflow-hidden shadow-xl mb-10 bg-iron-800">
           <img
-            src="./assets/kettlebellbeach.webp"
+            src={HERO_KETTLEBELL_URL}
             alt="Kettlebell on the sand"
             className="w-full h-full object-cover opacity-90"
           />
@@ -46,6 +47,8 @@ const Landing = () => {
       <section className="w-full max-w-md px-6 grid gap-4 mb-8">
         <FeatureCard
           icon={Dumbbell}
+          iconColor="text-red-800"
+          showBorder={true}
           title="Daily Wods"
           description="Professional programming delivered daily to your pocket."
         />

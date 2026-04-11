@@ -14,6 +14,8 @@ interface FeatureCardProps {
    * de iconos (como los de Lucide) como referencia, manteniendo la flexibilidad.
    */
   icon: ComponentType<LucideProps>;
+  iconColor?: string; // Para controlar el rojo/negro
+  showBorder?: boolean; //para controlar el borde lateral
 }
 
 /**
@@ -22,14 +24,22 @@ interface FeatureCardProps {
  * Se renombra 'icon' a 'Icon' (mayúscula) para que React lo reconozca como componente.
  */
 
-const FeatureCard = ({ title, description, icon: Icon }: FeatureCardProps) => {
+const FeatureCard = ({ 
+  title, 
+  description, 
+  icon: Icon, 
+  iconColor = "text-iron-950",
+  showBorder = false // Por defecto no tiene borde
+}: FeatureCardProps) => {
   return (
-    <article className="p-4 border rounded-lg shadow-sm">
-      <Icon className="w-10 h-10" />
-
-      <h3 className="text-xl font-bold mt-2">{title}</h3>
-      <p className="text-gray-600">{description}</p>
-    </article>
+    <article className={`
+      relative bg-white p-6 rounded-xl shadow-sm flex flex-col
+      ${showBorder ? 'border-l-4 border-red-800' : 'border-l-0'} 
+    `}>
+      <Icon className={`w-7 h-7 mb-4 ${iconColor}`} />
+      <h3 className="text-xl font-black text-iron-950 uppercase leading-tight">{title}</h3>
+      <p className="text-sm text-iron-600 mt-2 font-medium">{description}</p>
+    </article> 
   );
 };
 
