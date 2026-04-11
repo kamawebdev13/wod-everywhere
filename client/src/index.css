@@ -1,6 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Lexend:wght@300;400;600&display=swap');
 
-
+@theme {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Lexend", sans-serif;
+  --color-iron-950: #0A0A0A;
+  --color-iron-900: #171717;
+  --color-iron-800: #262626;
+  --color-ivory-50: #FDFCF8;
+  --color-ivory-100: #F5F5F0;
+  --color-brand-red: #9B1C1C;
+  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
 /* :root {
   --text: #6b6375;
   --text-h: #08060d;

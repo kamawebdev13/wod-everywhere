@@ -1,14 +1,21 @@
 /**
- * Diccionario centralizado de rutas de la aplicación.
- * Usamos 'as const' para que TypeScript trate los valores como literales inmutables.
+ * Diccionario centralizado de rutas.
  */
 export const ROUTES = {
-  HOME: '/',
+  // --- Rutas Públicas ---
+  LANDING: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  HISTORY: '/history',
-  WORKOUT: '/workout/:id', // Ruta dinámica para ver un entreno específico
+  
+  // --- Rutas Privadas (Dashboard y Tab Bar) ---
+  HOME: '/workouts',         // El Dashboard principal
+  HISTORY: '/history',       // Tu ruta actual de historial
+  WORKOUT: '/workout/:id',   // Vista de un WOD específico
+  
+  // --- Futuras pestañas de la Tab Bar ---
+  EXPLORE: '/explore',
+  STATS: '/stats',
+  PROFILE: '/profile',
 } as const;
-
-// Tipo útil por si necesitas referenciar las rutas en otras interfaces
+// Tipo útil por si se necesita referenciar las rutas en otras interfaces
 export type AppRoutes = typeof ROUTES[keyof typeof ROUTES];
