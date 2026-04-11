@@ -6,7 +6,7 @@ import { AuthProvider } from '@/context/auth-provider';
 import { ProtectedRoute } from '@/components/protected-route';
 import { ROUTES } from '@/const/routes';
 
-// 1. Carga Perezosa (Lazy Loading): Solo descargan el JS cuando entras a la ruta
+// 1. Carga Perezosa (Lazy Loading): Solo descargan el JS cuando se entra a la ruta
 // Importante: El componente debe ser el 'default export' en su archivo
 const LandingPage = lazy(() => import('@/pages/landing'));
 // const LoginPage = lazy(() => import('@/pages/login-page'));

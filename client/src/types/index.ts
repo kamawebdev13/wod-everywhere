@@ -24,12 +24,24 @@ export interface IWorkout {
   createdAt: string;
 }
 
+// interfaz para agrupar las estadísticas del dashboard
+export interface IUserStats {
+  wodsCompleted: number;
+  currentStreak: number;
+  personalRecords: number;
+  prsThisMonth: number;
+}
+
 //  AuthContext y el login
 export interface IUser {
   id: string;
   email: string;
   name?: string;
   role: 'user' | 'admin';
+  avatarUrl?: string;       // Foto subida por el usuario
+  level?: string;           // Ej: "Intermediate - Elite Engine"
+  tags?: string[];          // Ej: ["Functional Fitness", "Endurance Focus"]
+  stats?: IUserStats;       // Objeto con las estadísticas dinámicas
 }
 
 // Tipo para la respuesta del Login
