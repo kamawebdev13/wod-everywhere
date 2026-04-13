@@ -3,7 +3,7 @@ import { Dumbbell, Compass, BarChart2 } from 'lucide-react';
 import { ROUTES } from '@/const/routes';
 import { Button } from '@/components/ui/button';
 import FeatureCard from '@/components/common/feature-card';
-import { HERO_KETTLEBELL_URL } from '@/const/images';
+import { hero_kettlebell_url  } from '@/const/images';
 
 const Landing = () => {
   return (
@@ -13,7 +13,7 @@ const Landing = () => {
       <section className="w-full max-w-md px-6 pt-12 pb-8 flex flex-col items-center text-center">
         <div className="w-full aspect-square rounded-lg overflow-hidden shadow-xl mb-10 bg-iron-800">
           <img
-            src={HERO_KETTLEBELL_URL}
+            src={hero_kettlebell_url }
             alt="Kettlebell on the sand"
             className="w-full h-full object-cover opacity-90"
           />
