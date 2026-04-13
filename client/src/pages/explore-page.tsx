@@ -1,5 +1,4 @@
 import { useState, useCallback, type ReactElement } from 'react';
-// IMPORTANTE: He cambiado el nombre de las constantes a camelCase para cumplir tu rúbrica
 import { locations } from '@/const/locations';
 import { equipmentMap } from '@/const/equipment';
 import { targets } from '@/const/targets'; 
@@ -46,7 +45,7 @@ export const ExplorePage = (): ReactElement => {
   // Lógica de comunicación con la API y gestión de estado de carga
   const { getOptions, loading } = useGenerateWod();
 
-// Estado centralizado para las preferencias del usuario// Variables y estado en camelCase
+// Estado centralizado para las preferencias del usuario
   const [selections, setSelections] = useState<WodSelections>({
     locationId: null,
     equipmentIds: [],
