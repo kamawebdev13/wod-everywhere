@@ -9,6 +9,7 @@ export interface IWod {
   _id: string;
   title: string;
   type: string;
+  duration: number;
   location: string[];
   equipment: string[];
   exercises: IExercise[]; 

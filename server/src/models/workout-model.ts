@@ -13,8 +13,8 @@ export interface IWorkout extends Document {
 const workoutSchema = new Schema<IWorkout>({
   userId:   { type: Schema.Types.ObjectId, ref: 'User', required: true },
   wodId:    { type: Schema.Types.ObjectId, ref: 'Wod', required: true },
-  duration: { type: String },
-  score:    { type: String },
+  duration: { type: String, required: true},
+  score:    { type: String, required: true },
   notes:    { type: String },
   date:     { type: Date, default: Date.now }
 }, { timestamps: true });

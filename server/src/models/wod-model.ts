@@ -10,6 +10,7 @@ interface IExercise {
 export interface IWod extends Document {
   title: string;
   type: string; 
+  duration: number;
   location: string[];
   equipment: string[];
   target: string[];
@@ -26,6 +27,7 @@ const exerciseSchema = new Schema<IExercise>({
 const wodSchema = new Schema<IWod>({
   title:     { type: String, required: true },
   type:      { type: String }, 
+  duration:  { type: Number, required: true, default: 20 },
   location:  { type: [String] },
   equipment: { type: [String] },
   target:    { type: [String] },

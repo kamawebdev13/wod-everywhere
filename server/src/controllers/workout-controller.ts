@@ -5,30 +5,29 @@ import type { Request, Response, NextFunction } from "express";
 // 1. Guarda un WOD generado en el perfil del usuario (Selección del usuario)
 export const saveWorkout = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Recibimos el ID del WOD que el usuario eligió de los 3 mostrados
-    const { wodId } = req.body;
+    // 1. Extraemos TODO lo que mandamos desde el frontend
+    const { wodId, duration, score, notes } = req.body;
     const userId = (req as any).user?.userId;
 
     if (!wodId) {
       return res.status(400).json({
         success: false,
-        message: "Debes proporcionar el ID del WOD que quieres guardar"
+        message: "Debes proporcionar el ID del WOD"
       });
     }
 
-    // Creamos el registro en la colección Workout
+    // 2. Creamos el registro con los datos REALES del entrenamiento
     const workout = await Workout.create({
       userId,
       wodId,
-      // Al principio puede estar vacío, el usuario lo actualizará al terminar
-      duration: req.body.duration || "00:00",
-      score: req.body.score || "Pendiente",
-      notes: req.body.notes || ""
+      duration: duration || "00:00", // Si llega de la ResumePage, usará el tiempo real
+      score: score || "0%",          // Si llega de la ResumePage, usará el % real
+      notes: notes || ""             // Si llega de la ResumePage, usará las notas
     });
 
     res.status(201).json({
       success: true,
-      message: "WOD guardado en tu perfil con éxito",
+      message: "¡Entrenamiento guardado con éxito!",
       data: workout
     });
 

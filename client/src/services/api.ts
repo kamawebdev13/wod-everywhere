@@ -75,20 +75,25 @@ export const authService = {
 // ─── SERVICIOS DE GENERACIÓN (WODs) ──────────────────────────────────────────
 // Lógica de consulta al motor de generación de entrenamientos
 export const wodService = {
-    // Añadimos Promise<IWod[]> para que React sepa que recibe un array de WODs
-    generate: (location: string, equipment: string, target: string): Promise<IWod[]> =>
-        request(`/api/v1/wods/generate?location=${location}&equipment=${equipment}&target=${target}`),
+  /**
+   * Envía los filtros (lugar, equipo, objetivo) y recibe las 3 opciones.
+   * Ahora usa POST y la función request que ya maneja el token.
+   */
+  generate: (params: { location: string; equipment: string[]; target: string }): Promise<IWod[]> =>
+    request("/api/v1/wods/generate", {
+      method: "POST",
+      body: JSON.stringify(params),
+    }),
 };
-
 // ─── SERVICIOS DE ENTRENAMIENTOS (WORKOUTS) ──────────────────────────────────
 // CRUD para la gestión de los entrenamientos guardados y sus resultados
 export const workoutService = {
     getAll: () => request("/api/v1/wods/saved"),
 
-    save: (wodId: string) =>
+   save: (data: { wodId: string; duration: string; score: string; notes?: string }) =>
         request("/api/v1/wods/save", {
             method: "POST",
-            body: JSON.stringify({ wodId }),
+            body: JSON.stringify(data), // Enviamos todo el objeto (incluye duration, score y notes)
         }),
 
     update: (id: string, data: Partial<IWorkout>): Promise<IWorkout> =>

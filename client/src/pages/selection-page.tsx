@@ -19,7 +19,8 @@ export const SelectionPage = (): ReactElement => {
   }, [selectedWod, navigate]);
 
   // Hook Personalizado para el tiempo 
-  const { seconds, isActive, toggleTimer } = useWorkoutTimer(1200);
+  const initialSeconds = (selectedWod?.duration || 20) * 60;
+  const { seconds, isActive, toggleTimer } = useWorkoutTimer(initialSeconds);
 
   // Estados agrupados 
   const [workoutUI, setWorkoutUI] = useState({
@@ -62,6 +63,24 @@ export const SelectionPage = (): ReactElement => {
 // Renderizado condicional de seguridad: evita errores si el WOD no se ha cargado correctamente
   if (!selectedWod) return <></>;
 
+  // Función para finalizar y enviar datos 
+  const handleFinish = () => {
+    // Calculamos cuánto tiempo pasó realmente (Tiempo inicial  - lo que queda)
+    const secondsElapsed = initialSeconds - seconds; 
+    
+    // Lo formateamos a MM:SS usando tu función existente
+    const finalTime = formatTime(secondsElapsed);
+
+    // Navegamos pasando la "maleta" con los nombres exactos que espera ResumePage
+    navigate('/summary', {
+      state: {
+        selectedWod,
+        timeSpent: finalTime,
+        completedCount: workoutUI.completedExercises.length
+      }
+    });
+  };
+
   return (
     <div className="flex flex-col h-screen bg-white animate-fade-in overflow-hidden">
       
@@ -83,7 +102,7 @@ export const SelectionPage = (): ReactElement => {
         <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div 
             className="progress-bar h-full bg-brand-red transition-all duration-1000 ease-linear"
-            style={{ width: `${(seconds / 1200) * 100}%` }}
+            style={{ width: `${(seconds / initialSeconds) * 100}%` }}
           />
         </div>
 
@@ -159,9 +178,9 @@ export const SelectionPage = (): ReactElement => {
         >
           {isActive ? <><Pause className="mr-2" size={16} /> Pause</> : <><Play className="mr-2" size={16} /> Resume</>}
         </Button>
-        <Button 
+       <Button 
           className="flex-1 h-14 bg-iron-950 text-white font-bold uppercase tracking-widest text-xs"
-          onClick={() => navigate('/summary')}
+          onClick={handleFinish} 
         >
           <Flag className="mr-2" size={16} /> Finish
         </Button>

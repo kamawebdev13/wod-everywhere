@@ -18,6 +18,7 @@ const wods = [
     {
         title: "Gym Beast Mode",
         type: "EMOM 15",
+        duration: 15,
         location: ["gym", "box"],
         equipment: ["barbell", "pullup_bar"],
         target: ["legs", "upper"],
@@ -30,6 +31,7 @@ const wods = [
     {
         title: "Mountain Warrior",
         type: "For Time",
+        duration: 30,
         location: ["mountains"],
         equipment: ["none", "bodyweight"],
         target: ["legs", "cardio"],
@@ -43,6 +45,7 @@ const wods = [
     {
         title: "Beach Burner",
         type: "Tabata",
+        duration: 4,
         location: ["beach"],
         equipment: ["none", "bodyweight"],
         target: ["fullbody", "cardio"],
@@ -56,6 +59,7 @@ const wods = [
     {
         title: "Home Strength",
         type: "AMRAP 20",
+        duration: 20,
         location: ["home"],
         equipment: ["dumbbells"],
         target: ["upper", "core"],
@@ -69,6 +73,7 @@ const wods = [
     {
         title: "Park Essentials",
         type: "For Time",
+        duration: 20,
         location: ["park"],
         equipment: ["pullup_bar"],
         target: ["fullbody"],
@@ -82,6 +87,7 @@ const wods = [
     {
         title: "High Altitude HIIT",
         type: "AMRAP 15",
+        duration: 15,
         location: ["mountains", "outdoor"],
         equipment: ["none"],
         target: ["cardio", "fullbody"],
@@ -94,6 +100,7 @@ const wods = [
     {
         title: "Ocean Core",
         type: "3 Rounds",
+        duration: 10,
         location: ["beach", "outdoor"],
         equipment: ["none"],
         target: ["core"],
@@ -106,6 +113,7 @@ const wods = [
     {
         title: "Kettlebell Power",
         type: "EMOM 10",
+        duration: 10,
         location: ["home", "gym", "box"],
         equipment: ["kettlebell"],
         target: ["fullbody", "strength"],
@@ -117,6 +125,7 @@ const wods = [
     {
         title: "Street Workout Pro",
         type: "5 Rounds",
+        duration: 25,
         location: ["park"],
         equipment: ["pullup_bar"],
         target: ["upper"],
@@ -129,6 +138,7 @@ const wods = [
     {
         title: "Heavy Metal Cross",
         type: "For Time",
+        duration: 15,
         location: ["box", "gym"],
         equipment: ["barbell", "box"],
         target: ["fullbody"],

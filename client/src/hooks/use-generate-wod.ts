@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { wodService } from '@/services/wod.service';
+import { wodService } from '@/services/api';
 import { useNavigate } from 'react-router-dom';
 
 export const useGenerateWod = () => {
