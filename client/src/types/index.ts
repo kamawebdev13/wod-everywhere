@@ -12,6 +12,7 @@ export interface IWod {
   duration: number;
   location: string[];
   equipment: string[];
+  target: string[];
   exercises: IExercise[]; 
   videoUrl?: string;
 }
@@ -32,7 +33,7 @@ export interface IWorkoutRecord {
   duration: string;
   score: string;
   wodId?: {
-    title: string;
+  title: string;
   };
 }
 
@@ -48,16 +49,22 @@ export interface IUserStats {
 export interface IUser {
   id: string;
   email: string;
-  name?: string;
+  name: string;
   role: 'user' | 'admin';
   avatarUrl?: string;       // Foto subida por el usuario
-  level?: string;           // Ej: "Intermediate - Elite Engine"
-  tags?: string[];          // Ej: ["Functional Fitness", "Endurance Focus"]
-  stats?: IUserStats;       // Objeto con las estadísticas dinámicas
+  level: 'BEGINNER' | 'INTERMEDIATE' | 'ELITE';         
+  tags: string[];          // Ej: ["Functional Fitness", "Endurance Focus"]S
+  stats: IUserStats;       // Objeto con las estadísticas dinámicas
+}
+
+// Única interfaz  para el fetch de registro (necesaria para el password)
+export interface IRegisterRequest extends Omit<IUser, 'id' | 'role' | 'stats'> {
+  password: string;
 }
 
 // Tipo para la respuesta del Login
 export interface IAuthResponse {
+  success: boolean;
   token: string;
   user: IUser;
 }

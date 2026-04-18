@@ -1,14 +1,14 @@
 import debug from 'debug';
-import type { IAuthResponse, IWod, IWorkout } from '@/types';
+import type { IAuthResponse, IWod, IWorkout, IRegisterRequest } from '@/types';
 
 const log = debug('app:api');
 const API_URL = import.meta.env.VITE_API_URL; // Base URL de la API obtenida del entorno (Vite)
 
 /**
- * Función base para realizar peticiones HTTP (fetch) centralizadas.
- * Gestiona automáticamente el token JWT y la serialización JSON.
+ * Función base centralizada. 
+ * Añadimos <T> para que los servicios sepan qué reciben exactamente.
  */
-const request = async (endpoint: string, options?: RequestInit) => {
+const request = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
     // Recuperación del token para persistencia de sesión
     const token = localStorage.getItem("token");
 
@@ -45,7 +45,7 @@ const request = async (endpoint: string, options?: RequestInit) => {
 // Manejo de identidad, registro y persistencia local del estado de usuario
 export const authService = {
     login: async (email: string, password: string): Promise<IAuthResponse> => {
-        const data = await request("/api/v1/auth/login", {
+        const data = await request<IAuthResponse>("/api/v1/auth/login", {
             method: "POST",
             body: JSON.stringify({ email, password }),
         });
@@ -58,12 +58,13 @@ export const authService = {
         return data;
     },
 
-    register: async (userData: object) => {
-        return request("/api/v1/auth/register", {
-            method: "POST",
-            body: JSON.stringify(userData),
-        });
-    },
+    register: async (userData: IRegisterRequest): Promise<IAuthResponse> => {
+    // Usamos IRegisterRequest para el envío y esperamos IAuthResponse
+    return request<IAuthResponse>("/api/v1/auth/register", {
+      method: "POST",
+      body: JSON.stringify(userData),
+    });
+  },
 
     logout: () => {
         localStorage.removeItem("token");
@@ -88,7 +89,8 @@ export const wodService = {
 // ─── SERVICIOS DE ENTRENAMIENTOS (WORKOUTS) ──────────────────────────────────
 // CRUD para la gestión de los entrenamientos guardados y sus resultados
 export const workoutService = {
-    getAll: () => request("/api/v1/wods/saved"),
+    getAll: (): Promise<{ success: boolean; data: IWorkout[] }> => 
+        request("/api/v1/wods/saved"),
 
    save: (data: { wodId: string; duration: string; score: string; notes?: string }) =>
         request("/api/v1/wods/save", {

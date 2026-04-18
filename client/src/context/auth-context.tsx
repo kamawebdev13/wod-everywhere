@@ -5,8 +5,9 @@ import type { IUser } from '@/types';
  * Describe qué datos y funciones estarán disponibles globalmente.
  */
 interface AuthContextType {
-  user: IUser | null; // Tipado estricto en lugar de any
+  user: IUser | null; 
   isAuthenticated: boolean;
+  isLoading: boolean; // Necesario para evitar parpadeos en rutas protegidas
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }

@@ -1,18 +1,25 @@
 import { Schema, model, Document } from 'mongoose';
 
-// 1. Definimos la Interfaz (Requisito: Integridad y Tipado)
+// 1. INTERFAZ: Añadimos la identidad atlética y las estadísticas
 export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
   role: 'user' | 'admin'; 
-  isActive: boolean;     
-  age?: number;           
+  isActive: boolean;
+  level: 'BEGINNER' | 'INTERMEDIATE' | 'ELITE';
+  tags: string[]; // ['FUNCTIONAL', 'ENDURANCE', etc.]
+  avatarUrl?: string;
+  stats: {
+    totalWorkouts: number;
+    currentStreak: number;
+    personalRecords: number;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
 
-// 2. Definimos el Schema
+// 2. SCHEMA: Definimos cómo se guardan estos datos
 const userSchema = new Schema<IUser>({
   name: { 
     type: String, 
@@ -28,7 +35,6 @@ const userSchema = new Schema<IUser>({
   password: { 
     type: String, 
     required: [true, 'La contraseña es obligatoria'] 
-    // IMPORTANTE: Se encriptará en el controlador con bcrypt
   },
   role: {
     type: String,
@@ -38,10 +44,28 @@ const userSchema = new Schema<IUser>({
   isActive: {
     type: Boolean,
     default: true
+  },
+  // --- CAMPOS PARA ONBOARDING Y PROFILE ---
+  level: {
+    type: String,
+    enum: ['BEGINNER', 'INTERMEDIATE', 'ELITE'],
+    default: 'BEGINNER'
+  },
+  tags: {
+    type: [String], // Array de strings
+    default: []
+  },
+  avatarUrl: {
+    type: String,
+    default: ''
+  },
+  stats: {
+    totalWorkouts: { type: Number, default: 0 },
+    currentStreak: { type: Number, default: 0 },
+    personalRecords: { type: Number, default: 0 }
   }
 }, { 
-  timestamps: true // Requisito: Gestión de fechas automática
+  timestamps: true 
 });
 
-// 3. Exportamos el modelo
 export const User = model<IUser>('User', userSchema);

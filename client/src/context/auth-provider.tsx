@@ -1,5 +1,5 @@
-import { useState, type ReactNode } from 'react';
-import { AuthContext } from '@/context/auth-context'; // Importación absoluta
+import { useState, useEffect, type ReactNode, type ReactElement } from 'react';
+import { AuthContext } from '@/context/auth-context'; 
 import { authService } from '@/services/api'; 
 import type { IUser } from '@/types'; 
 import debug from 'debug';
@@ -10,30 +10,55 @@ const log = debug('app:auth-provider');
  * Proveedor del Contexto (AuthProvider).
  * Es el componente que envuelve la App y reparte la información.
  */
+export const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
+  // Inicialización perezosa para evitar errores de parseo
+  const [user, setUser] = useState<IUser | null>(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? (JSON.parse(savedUser) as IUser) : null;
+  });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>(
-    JSON.parse(localStorage.getItem('user') || 'null')
-  );
-   // Estado para el token: Indica si hay una sesión activa
+  // Estado para el token: Indica si hay una sesión activa
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-   /**
-   * Función de Login Global.
-   * Llama al servicio de API y actualiza el estado de React.
+  useEffect(() => {
+    const initAuth = (): void => {
+      const savedUser = localStorage.getItem('user');
+      const savedToken = localStorage.getItem('token');
+
+      if (savedUser && savedToken) {
+        try {
+          setUser(JSON.parse(savedUser) as IUser);
+          setToken(savedToken);
+        } catch {
+          authService.logout();
+        }
+      }
+      
+      // CAMBIO DE ESTADO: Aquí usamos la función para que deje de ser "unused"
+      setIsLoading(false);
+    };
+
+    initAuth();
+  }, []);
+
+  /**
+   * Login Global: Sincroniza API, localStorage y Estado de React.
    */
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<void> => {
     const data = await authService.login(email, password);
-       // Actualizamos los estados de React para que la UI reaccione al cambio
+    
+    // Actualizamos estados locales
     setToken(data.token);
     setUser(data.user);
+    
     log('Sesión iniciada: %s', data.user.email);
   };
- /**
-   * Función de Logout Global.
-   * Limpia tanto el localStorage (vía servicio) como el estado de React.
+
+  /**
+   * Logout Global: Limpia estado y almacenamiento.
    */
-  const logout = () => {
+  const logout = (): void => {
     authService.logout();
     setToken(null);
     setUser(null);
@@ -41,8 +66,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    // 'isAuthenticated' se calcula dinámicamente: si hay token, es true.
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!token }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        login, 
+        logout, 
+        isAuthenticated: !!token,
+        isLoading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,8 @@ export const ROUTES = {
   // --- Rutas Públicas ---
   LANDING: '/',
   LOGIN: '/login',
-  REGISTER: '/register',
+  REGISTER_STEP_ONE: '/register-step-1',
+  REGISTER_STEP_TWO: '/register-step-2',
   
   // --- Rutas Privadas (Dashboard y Tab Bar) ---
   HOME: '/workouts',         // El Dashboard principal
@@ -16,6 +17,7 @@ export const ROUTES = {
   EXPLORE: '/explore',
   STATS: '/stats',
   PROFILE: '/profile',
+  RESUME: '/resume'
 } as const;
 // Tipo útil por si se necesita referenciar las rutas en otras interfaces
 export type AppRoutes = typeof ROUTES[keyof typeof ROUTES];
