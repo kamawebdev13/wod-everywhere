@@ -5,17 +5,18 @@
  */
 import type { ComponentType } from 'react';
 import type { LucideProps } from 'lucide-react';
-
-interface FeatureCardProps {
-  title: string;
-  description: string;
   /**
    * Se define 'icon' como ComponentType para permitir el paso de componentes 
    * de iconos (como los de Lucide) como referencia, manteniendo la flexibilidad.
    */
-  icon: ComponentType<LucideProps>;
+interface FeatureCardProps {
+  title: string;
+  description?: string;
+  icon?: ComponentType<LucideProps>;
   iconColor?: string; // Para controlar el rojo/negro
   showBorder?: boolean; //para controlar el borde lateral
+  borderColor?: string; // Para controlar si es rojo o negro
+  children?: React.ReactNode;
 }
 
 /**
@@ -29,18 +30,23 @@ const FeatureCard = ({
   description, 
   icon: Icon, 
   iconColor = "text-iron-950",
-  showBorder = false // Por defecto no tiene borde
+  showBorder = false,
+  borderColor = "border-red-800",
+  children 
 }: FeatureCardProps) => {
   return (
     <article className={`
       relative bg-white p-6 rounded-xl shadow-sm flex flex-col
-      ${showBorder ? 'border-l-4 border-red-800' : 'border-l-0'} 
+      ${showBorder ? `border-l-4 ${borderColor}` : 'border-l-0'} 
     `}>
-      <Icon className={`w-7 h-7 mb-4 ${iconColor}`} />
-      <h3 className="text-xl font-black text-iron-950 uppercase leading-tight">{title}</h3>
-      <p className="text-sm text-iron-600 mt-2 font-medium">{description}</p>
+      {Icon && <Icon className={`w-7 h-7 mb-4 ${iconColor}`} />}
+      <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">{title}</h3>
+      
+      {/* Si hay children lo muestra. Si no, muestra la descripción */}
+      {children ? children : (
+        <p className="text-sm text-iron-600 mt-2 font-medium">{description}</p>
+      )}
     </article> 
   );
 };
-
 export default FeatureCard;

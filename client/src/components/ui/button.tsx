@@ -1,7 +1,7 @@
 // 1. Tipado completo para un botón HTML en TypeScript
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode; // contenido inyectado via {props.children} *sugerido por Gemini más eficiente*
-  variant?: 'primary' | 'ghost'; // Definimos las variantes visuales
+  variant?: 'primary' | 'ghost'| "outline"; // Definimos las variantes visuales
 }
 
 // 2. Exportamos el Componente Button

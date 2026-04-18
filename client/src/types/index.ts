@@ -25,6 +25,17 @@ export interface IWorkout {
   createdAt: string;
 }
 
+
+// interfaz para agrupar los entrenamientos guardados por el usuario.
+export interface IWorkoutRecord {
+  _id: string;
+  duration: string;
+  score: string;
+  wodId?: {
+    title: string;
+  };
+}
+
 // interfaz para agrupar las estadísticas del dashboard
 export interface IUserStats {
   wodsCompleted: number;
