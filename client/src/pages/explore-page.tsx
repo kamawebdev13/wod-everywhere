@@ -11,12 +11,12 @@ import {
   Accessibility, Crosshair, Footprints, Target, Heart 
 } from 'lucide-react';
 
-
+// importamos componentes
 import { LocationSelector } from '@/components/explore/location-selector';
 import { TargetSelector } from '@/components/explore/target-selector';
 import { EquipmentSelector } from '@/components/explore/equipment-selector';
 
-
+//agrupamos las constantes para los iconos que le pasemos a los componentes tarjetas de selección
 const locationIcons = { beach: Umbrella, park: Trees, gym: Dumbbell, home: Home, mountains: Mountain };
 const targetIcons = { fullbody: Accessibility, upper: Crosshair, legs: Footprints, core: Target, cardio: Heart };
 

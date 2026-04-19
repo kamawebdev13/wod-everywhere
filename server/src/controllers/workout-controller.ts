@@ -8,7 +8,7 @@ export const saveWorkout = async (req: Request, res: Response, next: NextFunctio
   try {
     // 1. Extraemos TODO lo que mandamos desde el frontend
     const { wodId, duration, score, notes } = req.body;
-    const userId = (req as any).user?.userId;
+    const userId = req.user?.userId;
 
     if (!wodId) {
       return res.status(400).json({
@@ -31,12 +31,8 @@ export const saveWorkout = async (req: Request, res: Response, next: NextFunctio
       $inc: { "stats.wodsCompleted": 1 } // Incrementa en 1 el contador
     });
 
-    res.status(201).json({
-      success: true,
-      message: "¡Entrenamiento guardado con éxito!",
-      data: workout
-    });
-
+    return res.status(201).json(workout);
+    
   } catch (error) {
     next(error);
   }
@@ -49,10 +45,8 @@ export const getSavedWorkout = async (req: Request, res: Response, next: NextFun
       .populate('wodId') // Crucial para ver los detalles del ejercicio
       .sort({ createdAt: -1 }); // Los más recientes primero
 
-    res.json({
-      success: true,
-      data: workouts
-    });
+    return res.status(200).json(workouts);
+
   } catch (error) {
     next(error);
   }
@@ -72,7 +66,8 @@ export const updateWorkout = async (req: Request, res: Response, next: NextFunct
       return res.status(404).json({ success: false, message: "Entrenamiento no encontrado o no autorizado" });
     }
 
-    res.json({ success: true, data: updated });
+    return res.status(200).json(updated);
+
   } catch (error) {
     next(error);
   }
@@ -90,7 +85,8 @@ export const deleteWorkout = async (req: Request, res: Response, next: NextFunct
       return res.status(404).json({ success: false, message: "Entrenamiento no encontrado" });
     }
 
-    res.json({ success: true, message: "Eliminado correctamente" });
+    return res.status(204).send();
+
   } catch (error) {
     next(error);
   }

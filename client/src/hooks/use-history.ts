@@ -12,9 +12,11 @@ export const useHistory = () => {
       try {
         setIsLoading(true);
         const response = await workoutService.getAll();
-        setHistory(response.data);
-      } catch{
-        setError('COULD NOT RETRIEVE PERFORMANCE LOGS.');
+        setHistory(response);
+      } catch (err) {
+        // Capturamos el mensaje que viene del backend si existe
+        const message = err instanceof Error ? err.message : 'COULD NOT RETRIEVE PERFORMANCE LOGS.';
+        setError(message);
       } finally {
         setIsLoading(false);
       }

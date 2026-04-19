@@ -89,22 +89,26 @@ export const wodService = {
 // ─── SERVICIOS DE ENTRENAMIENTOS (WORKOUTS) ──────────────────────────────────
 // CRUD para la gestión de los entrenamientos guardados y sus resultados
 export const workoutService = {
-    getAll: (): Promise<{ success: boolean; data: IWorkout[] }> => 
+    // 1. Recibe el array directo
+    getAll: (): Promise<IWorkout[]> => 
         request("/api/v1/wods/saved"),
 
-   save: (data: { wodId: string; duration: string; score: string; notes?: string }) =>
+    // 2. Recibe el objeto guardado directo
+    save: (data: { wodId: string; duration: string; score: string; notes?: string }): Promise<IWorkout> =>
         request("/api/v1/wods/save", {
             method: "POST",
-            body: JSON.stringify(data), // Enviamos todo el objeto (incluye duration, score y notes)
+            body: JSON.stringify(data),
         }),
 
+    // 3. Recibe el objeto actualizado directo
     update: (id: string, data: Partial<IWorkout>): Promise<IWorkout> =>
         request(`/api/v1/wods/${id}`, {
             method: "PATCH",
             body: JSON.stringify(data),
         }),
 
-    delete: (id: string): Promise<{ message: string }> =>
+    // 4. No recibe nada (204 No Content)
+    delete: (id: string): Promise<void> =>
         request(`/api/v1/wods/${id}`, {
             method: "DELETE"
         }),

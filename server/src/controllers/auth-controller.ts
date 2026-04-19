@@ -11,11 +11,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 //2. Comprobamos si el usuario ya existe
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "El email ya está registrado" 
-      });
-    }
+  return res.status(400).json({ message: "El email ya está registrado" }); 
+}
 //3. Encripta la contraseña
     const hashed = await bcrypt.hash(password, 10);
 //4. Crea el usuario
@@ -36,11 +33,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       } 
     });
 
-    res.status(201).json({ 
-      success: true,
-      message: "Usuario creado e Identidad definida", 
-      data: { userId: user._id } 
-    });
+    return res.status(201).json({ userId: user._id });
   } catch (error) {
     next(error); // 5. Enviamos el error al middleware global de index.ts
   }
@@ -55,7 +48,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
  //6. Busca el usuario
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ success: false, message: "Credenciales incorrectas" });
+      return res.status(401).json({ message: "Credenciales incorrectas" });
     }
 // 7. Compara la contraseña
     const isValid = await bcrypt.compare(password, user.password);
@@ -70,8 +63,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       { expiresIn: "7d" }
     );
 
-    res.json({ 
-      success: true,
+return res.status(200).json({ 
       token, 
       user: { 
         id: user._id,
@@ -95,30 +87,21 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
   try {
     // 1. Extraemos el id del token (inyectado por el middleware)
     // Usamos 'as any' para evitar problemas de tipos con req.user /*sugerido por Gemini*/
-    const userId = (req as any).user?.userId;
+    const userId = req.user?.userId;
 
     if (!userId) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'No autenticado o token inválido' 
-      });
+     return res.status(401).json({ message: 'No autenticado' });
     }
 
     // 2. Buscamos al usuario y excluimos la contraseña por seguridad
     const user = await User.findById(userId).select('-password');
 
     if (!user) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Usuario no encontrado' 
-      });
-    }
+  return res.status(404).json({ message: 'Usuario no encontrado' });
+}
 
     // 3. Respuesta exitosa
-    res.json({
-      success: true,
-      data: user
-    });
+    return res.status(200).json(user);
 
   } catch (error) {
     next(error); 
