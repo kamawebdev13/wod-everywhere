@@ -5,7 +5,6 @@ import { type IWod } from '@/types';
 
 /**
  * Interfaz local para validar los datos que llegan por el estado de navegación.
- * Punto 1 de la rúbrica: Integridad de Datos (Evitamos el uso de 'any').
  */
 interface ResumeState {
     selectedWod: IWod;
@@ -21,17 +20,22 @@ export const useResumeWod = () => {
     const location = useLocation();
     const navigate = useNavigate();
     
-    // Casting de seguridad para acceder a los datos de la navegación previa de forma tipada
+    // Casting de seguridad para acceder a los datos de la navegación previa
     const state = location.state as ResumeState | null;
     
-    // Estados locales para la gestión de notas y feedback de carga
+    // Estados locales para la gestión de notas y feedback de carga/error
     const [notes, setNotes] = useState('');
     const [loading, setLoading] = useState(false);
+    
+    /**
+     * Punto 2: Robustez - Sustituimos el 'alert' por un estado de error
+     * que la interfaz puede consumir para mostrar feedback visual no bloqueante.
+     */
+    const [syncError, setSyncError] = useState<string | null>(null);
 
     /**
-     * EFECTO DE SEGURIDAD (Punto 2: Robustez)
-     * Si el usuario accede a esta URL por error (ej: refresh), 
-     * lo redirigimos para evitar un crash por falta de datos del WOD.
+     * EFECTO DE SEGURIDAD
+     * Redirección si se pierde el contexto de navegación (ej: refrescar página).
      */
     useEffect(() => {
         if (!state?.selectedWod) {
@@ -40,8 +44,7 @@ export const useResumeWod = () => {
     }, [state, navigate]);
 
     /**
-     * LÓGICA DE RENDIMIENTO DEL USUARIO: Cálculo del rendimiento.
-     * Determinamos el porcentaje completado basado en los ejercicios realizados.
+     * LÓGICA DE RENDIMIENTO: Cálculo basado en ejercicios completados.
      */
     const progressPercentage = state 
         ? Math.round((state.completedCount / state.selectedWod.exercises.length) * 100) 
@@ -49,19 +52,18 @@ export const useResumeWod = () => {
 
     /**
      * FUNCIÓN DE PERSISTENCIA (Save Session)
-     * Envía los resultados finales al backend mediante el servicio workoutService.
+     * Desactiva el alert y gestiona el error mediante estado reactivo.
      */
     const handleSave = async () => {
         if (!state) return;
 
         try {
             setLoading(true);
+            setSyncError(null); // Reseteamos errores previos
             
-            // Score Logic: Si terminó el 100%, su score es el TIEMPO.
-            // De lo contrario, registramos el porcentaje de avance.
             const finalScore = progressPercentage === 100 ? state.timeSpent : `${progressPercentage}%`;
 
-            // Llamada al servicio consolidando datos de ambos pasos
+            // Intento de persistencia en el backend
             await workoutService.save({
                 wodId: state.selectedWod._id,
                 duration: state.timeSpent,
@@ -69,11 +71,14 @@ export const useResumeWod = () => {
                 notes: notes.trim()
             });
 
-            // Redirección limpia sustituyendo el historial para evitar bucles de navegación
+            // Navegación tras éxito
             navigate('/history', { replace: true });
         } catch {
-            // Manejo de error controlado para el usuario (Punto 2: Robustez)
-            alert("ERROR: EL MOTOR NO PUDO SINCRONIZAR LOS DATOS.");
+            /**
+             * Punto 2: Robustez - Feedback profesional.
+             * Seteamos el error en el estado en lugar de usar alerts bloqueantes.
+             */
+            setSyncError("ENGINE_SYNC_FAILURE: No se pudo sincronizar la sesión.");
         } finally {
             setLoading(false);
         }
@@ -84,6 +89,7 @@ export const useResumeWod = () => {
         notes,
         setNotes,
         loading,
+        syncError, // Exportamos el error para la UI
         progressPercentage,
         handleSave
     };

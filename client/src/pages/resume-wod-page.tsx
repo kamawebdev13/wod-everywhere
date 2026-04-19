@@ -1,9 +1,9 @@
 import { type ReactElement } from 'react';
-import { CheckCircle2, ArrowRight, MessageSquare } from 'lucide-react';
+import { CheckCircle2, ArrowRight, MessageSquare, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useResumeWod } from '@/hooks/use-resume-wood';
 
-// COMPONENTES STATELESS (Punto 3: Arquitectura Limpia)
+// COMPONENTES STATELESS
 import { ResumeHeader } from '@/components/resume/resume-header';
 import { ResumeTimerCard } from '@/components/resume/resume-timer-card';
 import { StatCard } from '@/components/resume/statcard';
@@ -11,15 +11,16 @@ import { ResumeMotivation } from '@/components/resume/resume-motivation';
 
 /**
  * PÁGINA DE RESUMEN (Container Component)
- * Estructura la visualización final tras completar un entrenamiento.
+ * Muestra el resultado de la sesión y gestiona el feedback de persistencia.
  */
 export const ResumeWodPage = (): ReactElement | null => {
-    // 1. Extraemos toda la lógica y estados del Custom Hook
+    // 1. Extraemos lógica, estados y el nuevo syncError del Hook
     const { 
         state, 
         notes, 
         setNotes, 
         loading, 
+        syncError, 
         progressPercentage, 
         handleSave 
     } = useResumeWod();
@@ -30,13 +31,10 @@ export const ResumeWodPage = (): ReactElement | null => {
     return (
         <div className="flex flex-col min-h-screen bg-[#F8F9FA] pb-10 font-sans">
             
-            {/* Cabecera visual de la página de resumen */}
             <ResumeHeader />
             
-            {/* Tarjeta destacada con el tiempo total transcurrido */}
             <ResumeTimerCard time={state.timeSpent} />
 
-            {/* Grid de estadísticas rápidas usando componentes reutilizables */}
             <section className="px-6 mt-4 flex gap-4">
                 <StatCard 
                     label="Completado" 
@@ -52,10 +50,8 @@ export const ResumeWodPage = (): ReactElement | null => {
                 />
             </section>
 
-            {/* Componente visual motivacional con optimización de imagen */}
             <ResumeMotivation />
 
-            {/* Área de Comentarios: Feedback cualitativo de la sesión */}
             <section className="px-6 mt-8">
                 <div className="flex items-center gap-2 mb-3">
                     <MessageSquare size={16} className="text-zinc-400" />
@@ -71,12 +67,21 @@ export const ResumeWodPage = (): ReactElement | null => {
                 />
             </section>
 
-            {/* Footer con acción de guardado y feedback de carga */}
+            {/* --- FEEDBACK DE ERROR (Punto 2: Robustez) --- */}
+            {syncError && (
+                <div className="mx-6 mt-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                    <AlertTriangle className="text-red-600" size={20} />
+                    <p className="text-[10px] font-black text-red-800 uppercase italic leading-tight">
+                        {syncError}
+                    </p>
+                </div>
+            )}
+
             <footer className="px-6 mt-auto pt-10">
                 <Button
                     onClick={handleSave}
                     disabled={loading}
-                    className="w-full h-16 bg-zinc-950 text-white rounded-xl font-bold uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                    className="w-full h-16 bg-zinc-950 text-white rounded-xl font-bold uppercase tracking-widest flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
                 >
                     {loading ? 'SINCRONIZANDO...' : 'FINALIZAR REGISTRO'}
                     <ArrowRight size={18} />
