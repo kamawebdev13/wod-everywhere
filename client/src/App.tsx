@@ -44,15 +44,11 @@ function App() {
 
                         {/* --- RUTAS PRIVADAS --- */}
                         <Route element={<ProtectedRoute />}>
-                            
+
                             {/* LAYOUT PRINCIPAL: Navbar + Tabbar 
                                 Aplicado a las pestañas del dashboard.
                             */}
-                            <Route element={
-                                <MainLayout>
-                                    <Outlet />
-                                </MainLayout>
-                            }>
+                            <Route element={<MainLayout />}>
                                 <Route path={ROUTES.HOME} element={<HomePage />} />
                                 <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
                                 <Route path={ROUTES.HISTORY} element={<HistoryPage />} />
@@ -65,7 +61,7 @@ function App() {
                                 Se mantiene fuera de MainLayout para enfoque total en el WOD.
                             */}
                             <Route path={ROUTES.SELECTION} element={<SelectionPage />} />
-                            
+
                         </Route>
 
                         {/* Fallback de seguridad */}

@@ -1,70 +1,74 @@
-import { type ReactNode } from 'react';
+import { useState } from 'react';
 import { Navbar } from './navbar';
 import { Tabbar } from './tabbar';
 import { useAuth } from '@/hooks/use-auth'; 
-import { useNavigate, useLocation } from 'react-router-dom';
-
-interface MainLayoutProps {
-  children: ReactNode;
-}
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { ROUTES } from '@/const/routes';
 
 /**
  * TIPO: TabPath
- * Define las rutas válidas que la Tabbar puede gestionar.
- * Punto 1: Integridad - Evita el uso de strings arbitrarios.
+ * Define las claves válidas para la navegación de la Tabbar.
  */
-type TabPath = 'workouts' | 'explore' | 'stats' | 'profile';
+type TabId = 'workouts' | 'explore' | 'stats' | 'profile';
 
-/**
- * COMPONENTE: MainLayout
- * Actúa como el orquestador visual de la aplicación privada.
- * Punto 3: Arquitectura - Centraliza Navbar y Tabbar en un solo contenedor.
- */
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = () => {
+  // Estado para controlar la visibilidad del Dropdown del Navbar
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   /**
-   * Obtiene la pestaña activa basándose en la URL actual.
-   * Se añade una validación para asegurar que el path coincida con los tipos esperados.
+   * Mapeo de IDs de la Tabbar a las rutas reales del diccionario ROUTES.
+   * Esto asegura que la navegación sea 100% precisa.
    */
-  const currentPath = location.pathname.split('/')[1];
-  const activeTab = (currentPath || 'workouts') as TabPath;
+  const tabToRoute: Record<TabId, string> = {
+    workouts: ROUTES.HOME,
+    explore: ROUTES.EXPLORE,
+    stats: ROUTES.STATS,
+    profile: ROUTES.PROFILE
+  };
 
-  const handleNavigate = (tab: string) => {
-    // Navegación directa a las rutas base definidas en el diccionario ROUTES
-    navigate(`/${tab}`);
+  /**
+   * Lógica para identificar qué pestaña debe estar activa según la URL.
+   */
+  const currentPath = location.pathname;
+  const activeTab = (Object.keys(tabToRoute).find(
+    key => tabToRoute[key as TabId] === currentPath
+  ) || 'workouts') as TabId;
+
+  const handleNavigate = (tabId: TabId) => {
+    // Navegamos usando el diccionario centralizado
+    navigate(tabToRoute[tabId]);
   };
 
   const handleLogout = () => {
+    setIsMenuOpen(false); // Cerramos el menú antes de salir
     logout(); 
-    navigate('/login');
+    navigate(ROUTES.LOGIN);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans relative">
       
-      {/* NAVBAR: Superior persistente
-          Gestiona acciones globales como Logout e Historial.
-      */}
+      {/* NAVBAR: Ahora recibe el estado y la función de toggle */}
       <Navbar 
-        onMenuClick={handleLogout} 
-        onHistoryClick={() => navigate('/history')} 
+        onMenuClick={() => setIsMenuOpen(!isMenuOpen)} 
+        onHistoryClick={() => navigate(ROUTES.HISTORY)} 
+        isMenuOpen={isMenuOpen}
+        onCloseMenu={() => setIsMenuOpen(false)}
+        onLogout={handleLogout}
       />
 
-      {/* CONTENEDOR PRINCIPAL
-          - max-w-md: Mantiene la estética de aplicación móvil en escritorio.
-          - pb-28: Padding inferior de seguridad para que la Tabbar no solape el contenido.
-          - flex-1: Asegura que el contenedor crezca para empujar la Tabbar al fondo.
+      {/* CONTENEDOR DINÁMICO
+          Usamos Outlet para que React Router inyecte las páginas hijas aquí.
       */}
       <main className="flex-1 w-full max-w-md mx-auto px-4 pb-28 pt-6">
-        {children}
+        <Outlet />
       </main>
 
-      {/* TABBAR: Navegación de pulgar (Thumb Navigation)
-          Punto 2: Robustez - Proporciona una navegación intuitiva y persistente.
-      */}
+      {/* TABBAR: Navegación sincronizada */}
       <Tabbar 
         activeTab={activeTab} 
         onNavigate={handleNavigate} 
@@ -72,5 +76,3 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     </div>
   );
 };
-
-export default MainLayout;
