@@ -11,7 +11,7 @@ interface ResumeState {
   timeSpent: string;
   completedCount: number;
 }
-// IMPORTAMOS LOS COMPONENTES DE RESUME PAGE
+// IMPORTAMOS LOS COMPONENTES STATELESS
 import { ResumeHeader } from '@/components/resume/resume-header'
 import { ResumeTimerCard } from '@/components/resume/resume-timer-card';
 import { StatCard } from '@/components/resume/statcard';

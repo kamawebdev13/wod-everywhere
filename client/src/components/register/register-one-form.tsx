@@ -25,7 +25,7 @@ interface RegisterFormProps {
  * COMPONENTE STATELESS: Encargado únicamente de la representación visual del formulario.
  * Recibe toda la lógica desde el Smart Hook (useRegisterOne).
  */
-export const RegisterForm = ({
+export const RegisterOneForm = ({
     formData,
     showPassword,
     isSubmitDisabled,
