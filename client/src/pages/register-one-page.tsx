@@ -43,3 +43,5 @@ export const RegisterOnePage = (): ReactElement => {
         </div>
     );
 };
+
+export default RegisterOnePage;

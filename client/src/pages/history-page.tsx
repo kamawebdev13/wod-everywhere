@@ -34,3 +34,5 @@ export const HistoryPage = (): ReactElement => {
     </div>
   );
 };
+
+export default HistoryPage;

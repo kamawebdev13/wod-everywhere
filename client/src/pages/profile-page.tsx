@@ -45,3 +45,5 @@ export const ProfilePage = (): ReactElement => {
         </div>
     );
 };
+
+export default ProfilePage;

@@ -90,3 +90,5 @@ export const ResumeWodPage = (): ReactElement | null => {
         </div>
     );
 };
+
+export default ResumeWodPage;

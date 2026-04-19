@@ -9,53 +9,68 @@ interface MainLayoutProps {
 }
 
 /**
- * MainLayout: Orquestador para Web y Móvil.
- * Gestiona la navegación y la conexión lógica con el Backend.
+ * TIPO: TabPath
+ * Define las rutas válidas que la Tabbar puede gestionar.
+ * Punto 1: Integridad - Evita el uso de strings arbitrarios.
+ */
+type TabPath = 'workouts' | 'explore' | 'stats' | 'profile';
+
+/**
+ * COMPONENTE: MainLayout
+ * Actúa como el orquestador visual de la aplicación privada.
+ * Punto 3: Arquitectura - Centraliza Navbar y Tabbar en un solo contenedor.
  */
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { logout} = useAuth(); // Extraemos el token para asegurar que las rutas están protegidas
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   /**
-   * Lógica de Sincronización con el Backend:
-   * Al navegar, podríamos disparar una precarga de datos si fuera necesario.
+   * Obtiene la pestaña activa basándose en la URL actual.
+   * Se añade una validación para asegurar que el path coincida con los tipos esperados.
    */
+  const currentPath = location.pathname.split('/')[1];
+  const activeTab = (currentPath || 'workouts') as TabPath;
+
   const handleNavigate = (tab: string) => {
-    // Si el usuario cambia a una pestaña que requiere datos frescos, 
-    // la navegación dispara el ciclo de vida de la página destino que usa tu 'request' fetch.
+    // Navegación directa a las rutas base definidas en el diccionario ROUTES
     navigate(`/${tab}`);
   };
 
   const handleLogout = () => {
-    logout(); // Limpia localStorage y estado global
+    logout(); 
     navigate('/login');
   };
 
   return (
-    // 'bg-ivory-50': Color de fondo de la marca para toda la app.
-    <div className="min-h-screen bg-ivory-50 flex flex-col">
+    <div className="min-h-screen bg-zinc-50 flex flex-col font-sans">
       
-      {/* NAVBAR: Superior fija */}
+      {/* NAVBAR: Superior persistente
+          Gestiona acciones globales como Logout e Historial.
+      */}
       <Navbar 
         onMenuClick={handleLogout} 
         onHistoryClick={() => navigate('/history')} 
       />
 
-      {/* CONTENEDOR DE CONTENIDO (ADAPTABLE)
-          
+      {/* CONTENEDOR PRINCIPAL
+          - max-w-md: Mantiene la estética de aplicación móvil en escritorio.
+          - pb-28: Padding inferior de seguridad para que la Tabbar no solape el contenido.
+          - flex-1: Asegura que el contenedor crezca para empujar la Tabbar al fondo.
       */}
-      <main className="flex-1 w-full max-w-md mx-auto px-4 pb-28 pt-6 overflow-y-auto">
+      <main className="flex-1 w-full max-w-md mx-auto px-4 pb-28 pt-6">
         {children}
       </main>
 
-      {/* TABBAR: Inferior fija
-          Aquí es donde el usuario siente la experiencia 'App'.
+      {/* TABBAR: Navegación de pulgar (Thumb Navigation)
+          Punto 2: Robustez - Proporciona una navegación intuitiva y persistente.
       */}
       <Tabbar 
-        activeTab={location.pathname.split('/')[1] as 'workouts' | 'explore' | 'stats' | 'profile'} 
+        activeTab={activeTab} 
         onNavigate={handleNavigate} 
       />
     </div>
   );
 };
+
+export default MainLayout;

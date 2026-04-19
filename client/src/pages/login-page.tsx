@@ -31,3 +31,5 @@ export const LoginPage = (): ReactElement => {
         </div>
     );
 };
+
+export default LoginPage;

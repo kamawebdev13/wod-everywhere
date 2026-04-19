@@ -50,3 +50,5 @@ export const RegisterTwoPage = (): ReactElement => {
         </div>
     );
 };
+
+export default RegisterTwoPage;
