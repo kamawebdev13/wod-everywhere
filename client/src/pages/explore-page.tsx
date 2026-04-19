@@ -11,7 +11,7 @@ import {
   Accessibility, Crosshair, Footprints, Target, Heart 
 } from 'lucide-react';
 
-// importamos componentes
+// Importación de componentes Stateless
 import { LocationSelector } from '@/components/explore/location-selector';
 import { TargetSelector } from '@/components/explore/target-selector';
 import { EquipmentSelector } from '@/components/explore/equipment-selector';

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Heart} from 'lucide-react';
 import FeatureCard from '@/components/common/feature-card';
 
-// Capas de arquitectura
+// Importación Capas de arquitectura
 import { useHomeData } from '@/hooks/use-home-data';
 import { HomeHeader } from '@/components/home/home-header';
 import { FeaturedWodSection } from '@/components/home/feature-wod-section';
