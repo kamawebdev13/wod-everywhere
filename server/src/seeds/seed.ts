@@ -166,7 +166,7 @@ const seed = async () => {
 
         log('Seeding database...');
 
-        // 1. Limpieza de datos
+        //1. Limpieza de datos
         await Wod.deleteMany({});
         await Workout.deleteMany({});
         await User.deleteMany({});

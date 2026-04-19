@@ -45,7 +45,7 @@ const request = async <T>(endpoint: string, options?: RequestInit): Promise<T> =
 // Manejo de identidad, registro y persistencia local del estado de usuario
 export const authService = {
     login: async (email: string, password: string): Promise<IAuthResponse> => {
-        const data = await request<IAuthResponse>("/api/v1/auth/login", {
+        const data = await request<IAuthResponse>("/auth/login", {
             method: "POST",
             body: JSON.stringify({ email, password }),
         });
@@ -60,7 +60,7 @@ export const authService = {
 
     register: async (userData: IRegisterRequest): Promise<IAuthResponse> => {
     // Usamos IRegisterRequest para el envío y esperamos IAuthResponse
-    return request<IAuthResponse>("/api/v1/auth/register", {
+    return request<IAuthResponse>("/auth/register", {
       method: "POST",
       body: JSON.stringify(userData),
     });
@@ -81,7 +81,7 @@ export const wodService = {
    * Ahora usa POST y la función request que ya maneja el token.
    */
   generate: (params: { location: string; equipment: string[]; target: string }): Promise<IWod[]> =>
-    request("/api/v1/wods/generate", {
+    request("/wods/generate", {
       method: "POST",
       body: JSON.stringify(params),
     }),
@@ -91,25 +91,25 @@ export const wodService = {
 export const workoutService = {
     // 1. Recibe el array directo
     getAll: (): Promise<IWorkout[]> => 
-        request("/api/v1/wods/saved"),
+        request("/wods/saved"),
 
     // 2. Recibe el objeto guardado directo
     save: (data: { wodId: string; duration: string; score: string; notes?: string }): Promise<IWorkout> =>
-        request("/api/v1/wods/save", {
+        request("/wods/save", {
             method: "POST",
             body: JSON.stringify(data),
         }),
 
     // 3. Recibe el objeto actualizado directo
     update: (id: string, data: Partial<IWorkout>): Promise<IWorkout> =>
-        request(`/api/v1/wods/${id}`, {
+        request(`/wods/${id}`, {
             method: "PATCH",
             body: JSON.stringify(data),
         }),
 
     // 4. No recibe nada (204 No Content)
     delete: (id: string): Promise<void> =>
-        request(`/api/v1/wods/${id}`, {
+        request(`/wods/${id}`, {
             method: "DELETE"
         }),
 };
