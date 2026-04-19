@@ -32,3 +32,4 @@ export interface GenerateWodPayload {
   equipment: string[];
   target: string;
 }
+
