@@ -7,7 +7,7 @@ import type { Request, Response, NextFunction } from "express";
 //1. Registra un nuevo usuario en la base de datos
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, email, password, role, level, tags, isActive } = req.body;
+    const { name, email, password, level, tags} = req.body;
 //2. Comprobamos si el usuario ya existe
     const existing = await User.findOne({ email });
     if (existing) {
@@ -23,15 +23,16 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     name, 
       email, 
       password: hashed, 
-      role: role || 'user', 
+      role: 'user', // Forzamos 'user' por seguridad
       level: level || 'BEGINNER', // Valor por defecto si falla el Step 2
       tags: tags || [],           // Array de intereses (Functional, HIIT, etc.)
       isActive: true,
       // Inicializamos stats para que el Profile no salga con 'undefined'
       stats: {
-        totalWorkouts: 0,
+        wodsCompleted: 0,
         currentStreak: 0,
-        personalRecords: 0
+        personalRecords: 0,
+        prsThisMonth: 0
       } 
     });
 

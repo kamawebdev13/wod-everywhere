@@ -1,3 +1,4 @@
+import { User } from "../models/user-model";
 import { Workout } from "../models/workout-model";
 import type { Request, Response, NextFunction } from "express";
 
@@ -23,6 +24,11 @@ export const saveWorkout = async (req: Request, res: Response, next: NextFunctio
       duration: duration || "00:00", // Si llega de la ResumePage, usará el tiempo real
       score: score || "0%",          // Si llega de la ResumePage, usará el % real
       notes: notes || ""             // Si llega de la ResumePage, usará las notas
+    });
+
+    // ACTUALIZACIÓN DE ESTADÍSTICAS DEL ATLETA
+    await User.findByIdAndUpdate(userId, {
+      $inc: { "stats.wodsCompleted": 1 } // Incrementa en 1 el contador
     });
 
     res.status(201).json({

@@ -4,7 +4,9 @@ import { authMiddleware } from '../middlewares/auth-middleware'
 
 const authRouter = Router();
 
-/** POST crea nuevo usuario*/
+/** * POST /api/auth/register
+ * Recibe IRegisterRequest (Datos de Step 1 + Step 2)
+ */
 authRouter.post('/register', register)
 
 /** POST login con email o username */

@@ -4,7 +4,7 @@ import type { Request, Response, NextFunction } from "express";
 
 export const getWods = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { location, equipment, target } = req.query;
+        const { location, equipment, target } = req.body;
 
         // 1. Construimos el filtro dinámico
         const filter: any = {};

@@ -16,8 +16,8 @@ const wodRouter = Router()
 
 wodRouter.use(authMiddleware)
 
-/** GET  — Generar 3 opciones de WOD */
-wodRouter.get('/generate', getWods)
+/** POST  — Generar 3 opciones de WOD */
+wodRouter.post('/generate', getWods)
 
 /** POST  — guardar un WOD generado*/
 wodRouter.post('/save', saveWorkout)
