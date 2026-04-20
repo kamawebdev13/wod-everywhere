@@ -21,7 +21,6 @@ interface FeatureCardProps {
 
 /**
  * Componente Stateless: FeatureCard
- * Sigue la convención PascalCase y utiliza deconstrucción de parámetros.
  * Se renombra 'icon' a 'Icon' (mayúscula) para que React lo reconozca como componente.
  */
 

@@ -17,14 +17,19 @@ export const HomePage = (): ReactElement => {
     const { latestWorkout, loading, user } = useHomeData();
 
     // 2. FORMATEO DE DATOS 
-    const userName = user.name?.split(' ')[0] || 'Athlete';
+    const userName = user?.name?.split(' ')[0] || 'Athlete';
     const today = new Date();
     const dayName = today.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase();
     const dateString = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toUpperCase();
 
+    // 3. LÓGICA DE NAVEGACIÓN INTELIGENTE
     const handleStartWorkout = () => {
         if (latestWorkout?.wodId) {
+            // Si tiene uno reciente, vamos a repetir selección
             navigate('/selection', { state: { selectedWod: latestWorkout.wodId } });
+        }else {
+            // SI NO TIENE NADA (Usuario nuevo), lo mandamos a EXPLORE
+            navigate('/explore'); 
         }
     };
 
@@ -53,7 +58,7 @@ export const HomePage = (): ReactElement => {
 
             {/* --- RECENT PERFORMANCE (DINÁMICO) --- */}
            <PerformanceStats 
-            title={latestWorkout?.wodId?.title || "NO SESSIONS YET"}
+            title={latestWorkout?.wodId?.title || "READY TO SWEAT?"}
             dateInfo={latestWorkout?.createdAt ? 'COMPLETED RECENTLY' : 'START TRAINING TODAY'}
             personalRecords={user.stats?.personalRecords || 0}
         />

@@ -16,7 +16,7 @@ export const Navbar = ({
   onLogout 
 }: NavbarProps) => {
   return (
-    <header className="w-full h-16 flex items-center justify-between px-6 bg-white border-b border-iron-100 sticky top-0 z-[60]">
+    <header className="w-full h-16 flex items-center justify-between px-6 bg-white border-b border-iron-100 sticky top-0 z-60">
       
       {/* Botón Hamburguesa / Cerrar */}
       <button 

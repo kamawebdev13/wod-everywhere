@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
 import { equipmentMap } from '@/const/equipment';
 import { useGenerateWod } from '@/hooks/use-generate-wod';
-import { 
-  type WodSelections, 
-  type EquipmentMap 
+import {
+    type WodSelections,
+    type EquipmentMap
 } from '@/types/training';
 
 /**
@@ -27,10 +27,10 @@ export const useExplore = () => {
      * (Ej: No permitir mancuernas si el entorno es 'Beach' y no están en el mapa).
      */
     const handleLocationSelect = useCallback((id: string) => {
-        setSelections((prev) => ({ 
-            ...prev, 
-            locationId: id, 
-            equipmentIds: [] 
+        setSelections((prev) => ({
+            ...prev,
+            locationId: id,
+            equipmentIds: []
         }));
     }, []);
 
@@ -57,10 +57,9 @@ export const useExplore = () => {
      * LÓGICA DERIVADA: Filtra las opciones de equipo disponibles según la ubicación.
      * Mantenemos la robustez al verificar que el ID exista en el mapa.
      */
-    const currentEquipmentOptions = selections.locationId 
-        ? (equipmentMap as EquipmentMap)[selections.locationId.toUpperCase()] || []
-        : [];
-
+    const currentEquipmentOptions = selections.locationId
+        ? equipmentMap[selections.locationId.toLowerCase()] || []
+        : []
     /**
      * Acción de disparo: Valida y envía los datos al motor.
      */
@@ -81,6 +80,6 @@ export const useExplore = () => {
         handleTargetSelect,
         generateSession,
         // Validación de negocio para el botón
-        isValid: !!selections.locationId && !!selections.targetId
+        isValid: Boolean(selections.locationId && selections.targetId)
     };
 };
