@@ -3,7 +3,6 @@ import { equipmentMap } from '@/const/equipment';
 import { useGenerateWod } from '@/hooks/use-generate-wod';
 import {
     type WodSelections,
-    type EquipmentMap
 } from '@/types/training';
 
 /**
@@ -13,7 +12,7 @@ import {
  */
 export const useExplore = () => {
     // Servicio de generación de WOD (Capa de API)
-    const { getOptions, loading } = useGenerateWod();
+    const { getOptions, loading, error } = useGenerateWod();
 
     // Estado centralizado (Punto 1: Integridad)
     const [selections, setSelections] = useState<WodSelections>({
@@ -74,6 +73,7 @@ export const useExplore = () => {
     return {
         selections,
         loading,
+        error,
         currentEquipmentOptions,
         handleLocationSelect,
         toggleEquipment,

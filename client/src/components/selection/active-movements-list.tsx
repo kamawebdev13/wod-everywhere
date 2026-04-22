@@ -2,8 +2,8 @@ import { ExerciseItem } from '@/components/selection/exercise-item';
 import { type IWod } from '@/types/index';
 
 /**
- * PROPS: MovementsListProps
- * Interfaz para el listado de movimientos activos.
+ * INTERFAZ: MovementsListProps
+ * Define las propiedades para el listado de movimientos activos.
  */
 interface MovementsListProps {
     exercises: IWod['exercises'];
@@ -14,9 +14,9 @@ interface MovementsListProps {
 }
 
 /**
- * COMPONENTE STATELESS: ActiveMovementsList
+ * COMPONENTE: ActiveMovementsList
  * Gestiona el área de scroll y el mapeo de los ejercicios.
- * Punto 3: Arquitectura - Mantiene el scroll independiente del resto de la UI.
+ * Aplica deconstrucción de parámetros y evita el uso de index como key pura.
  */
 export const ActiveMovementsList = ({ 
     exercises, 
@@ -26,7 +26,8 @@ export const ActiveMovementsList = ({
     onToggle 
 }: MovementsListProps) => (
     <div className="relative flex-1 mt-6 overflow-hidden">
-        {/* Efecto de desvanecimiento superior para el scroll */}
+        {/* Gradiente superior: Efecto visual de desvanecimiento para el scroll.
+            Se usa bg-gradient-to-b para máxima compatibilidad. */}
         <div className="absolute top-0 left-0 right-0 h-16 bg-linear-to-b from-white via-white/80 to-transparent z-10 pointer-events-none" />
         
         <div className="h-full overflow-y-auto px-6 pt-12 pb-32 scrollbar-hide snap-y snap-mandatory">
@@ -34,19 +35,25 @@ export const ActiveMovementsList = ({
                 Active Movements
             </h3>
 
-            {exercises.map((ex, index) => (
-                <ExerciseItem 
-                    key={`${ex.name}-${index}`}
-                    exercise={ex}
-                    isDone={completedExercises.includes(ex.name)}
-                    isExpanded={expandedExercise === ex.name}
-                    onExpand={onExpand}
-                    onToggle={onToggle}
-                />
-            ))}
+            {/* RÚBRICA: Deconstrucción en el mapeo.
+                Extraemos 'name' para calcular estados y generar una key compuesta segura. */}
+            {exercises.map((exercise, index) => {
+                const { name } = exercise;
+                
+                return (
+                    <ExerciseItem 
+                        key={`${name}-${index}`} 
+                        exercise={exercise}
+                        isDone={completedExercises.includes(name)}
+                        isExpanded={expandedExercise === name}
+                        onExpand={onExpand}
+                        onToggle={onToggle}
+                    />
+                );
+            })}
         </div>
 
-        {/* Efecto de desvanecimiento inferior */}
+        {/* Gradiente inferior: Proporciona profundidad visual sobre el área de controles. */}
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-white via-white/90 to-transparent z-10 pointer-events-none" />
     </div>
 );

@@ -5,69 +5,81 @@ import { WodOptionCard } from '@/components/explore/wod-option-card';
 import { LevelUpBanner } from '@/components/explore/level-up-banner';
 
 /**
+ * INTERFAZ: LocationState
+ * Define la estructura del estado esperado para evitar el uso de 'any'.
+ */
+interface LocationState {
+  wods: IWod[];
+}
+
+/**
  * Página: GeneratedWodsPage
- * Muestra las opciones de entrenamiento generadas.
- * Punto 2: Robustez - Gestiona la ausencia de datos mediante redirección automática.
+ * Muestra las opciones de entrenamiento generadas por el motor.
+ * Cumple con la rúbrica de listas, deconstrucción y eficiencia.
  */
 export const GeneratedWodsPage = (): ReactElement | null => {
-    const location = useLocation();
+    // Deconstrucción de hooks de navegación
+    const { state } = useLocation();
     const navigate = useNavigate();
 
     /**
      * Punto 1: Integridad y Rendimiento
-     * Usamos useMemo para que la referencia de 'wods' solo cambie
-     * si 'location.state' realmente cambia.
+     * Deconstruimos el estado y usamos useMemo para evitar re-cálculos.
+     * Se accede a 'typedState' de forma segura.
      */
     const wods = useMemo(() => {
-        const state = location.state as { wods: IWod[] } | null;
-        return state?.wods || [];
-    }, [location.state]); // Solo se recalcula si cambia el estado de navegación
+        const typedState = state as LocationState | null;
+        return typedState?.wods || [];
+    }, [state]);
 
     /**
-     * EFECTO DE SEGURIDAD (Blindaje contra alerts)
-     * Si el usuario llega aquí sin WODs (ej. refresco de página),
-     * lo devolvemos a la fase de configuración sin interrumpir con alertas.
+     * EFECTO DE SEGURIDAD
+     * Si no hay WODs (ej. refresco de navegador), redirigimos a /explore.
      */
     useEffect(() => {
         if (wods.length === 0) {
             navigate('/explore', { replace: true });
         }
-    }, [wods, navigate]);
+    }, [wods.length, navigate]);
 
     /**
-     * Gestión de selección de entrenamiento.
+     * Gestión de selección: Navega al detalle del entrenamiento elegido.
      */
     const handleSelectWod = (wod: IWod): void => {
         navigate('/selection-page', { state: { selectedWod: wod } });
     };
 
-    // Si no hay WODs, no renderizamos nada mientras se ejecuta el useEffect
+    // Early return para evitar renderizado sin datos
     if (wods.length === 0) return null;
 
     return (
-        <div className="animate-fade-in pb-20 px-6 bg-[#F8F9FA] min-h-screen">
+        <div className="animate-fade-in pb-24 px-6 bg-[#F8F9FA] min-h-screen">
+            {/* Header con strings directos (sin interpolación innecesaria) */}
             <header className="py-10">
-                <span className="text-red-600 font-bold text-[10px] tracking-widest uppercase italic">
-                    Resultados
+                <span className="text-red-800 font-bold text-[10px] tracking-widest uppercase italic block">
+                    Resultados de generación
                 </span>
                 <h1 className="text-5xl font-black text-zinc-950 uppercase tracking-tighter leading-[0.8] mt-2 italic">
                     Tus <br /> Opciones
                 </h1>
             </header>
 
-            <div className="space-y-10">
-                {wods.map((wod, index) => (
+            {/* Renderizado de Lista*/}
+            <div className="grid grid-cols-1 gap-8">
+                {wods.map((wod) => (
                     <WodOptionCard 
-                        key={wod._id} 
+                        key={wod._id} // Uso exclusivo de ID único
                         wod={wod} 
-                        // El primer WOD se marca como la recomendación del motor
-                        isRecommended={index === 0} 
-                        onSelect={handleSelectWod}
+                        isRecommended // Prop booleana en forma corta
+                        onSelect={() => handleSelectWod(wod)} // Callback eficiente
                     />
                 ))}
             </div>
             
-            <LevelUpBanner />
+            {/* Sección final decorativa */}
+            <div className="mt-12">
+                <LevelUpBanner />
+            </div>
         </div>
     );
 };

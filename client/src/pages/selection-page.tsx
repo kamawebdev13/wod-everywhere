@@ -28,28 +28,31 @@ export const SelectionPage = (): ReactElement | null => {
     // 2. Punto 2 (Robustez): Si no hay WOD por refresco de página, evitamos crash
     if (!selectedWod) return null;
 
+    const { type, title, exercises } = selectedWod;
+    const { completedExercises, expandedExercise } = workoutUI;
+
     return (
         <div className="flex flex-col h-screen bg-white animate-fade-in overflow-hidden">
             
             {/* Sección: Timer y Título */}
             <SelectionHeader 
-                type={selectedWod.type}
-                title={selectedWod.title}
-                isActive={isActive}
+                type={type}
+                title={title}
+                isActive={isActive} // Forma corta si pasas variables booleanas
                 timeDisplay={formatTime(seconds)}
                 progress={(seconds / initialSeconds) * 100}
             />
 
-            {/* Sección: Lista de Ejercicios (Stateless) */}
+            {/* Sección: Lista de Ejercicios (Pasamos props deconstruidas) */}
             <ActiveMovementsList 
-                exercises={selectedWod.exercises}
-                completedExercises={workoutUI.completedExercises}
-                expandedExercise={workoutUI.expandedExercise}
+                exercises={exercises}
+                completedExercises={completedExercises}
+                expandedExercise={expandedExercise}
                 onExpand={handleExpand}
                 onToggle={toggleComplete}
             />
 
-            {/* Sección: Botonera de Control (Stateless) */}
+            {/* Sección: Botonera de Control */}
             <WorkoutControls 
                 isActive={isActive}
                 onToggle={toggleTimer}

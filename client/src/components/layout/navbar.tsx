@@ -16,12 +16,12 @@ export const Navbar = ({
   onLogout 
 }: NavbarProps) => {
   return (
-    <header className="w-full h-16 flex items-center justify-between px-6 bg-white border-b border-iron-100 sticky top-0 z-60">
+    <header className="w-full h-16 flex items-center justify-between px-6 bg-white border-b border-iron-100 sticky top-0 z-[100]">
       
-      {/* Botón Hamburguesa / Cerrar */}
+      {/* Botón Hamburguesa */}
       <button 
         onClick={onMenuClick}
-        className="text-iron-950 hover:opacity-70 transition-all p-1 z-50"
+        className="text-iron-950 hover:opacity-70 transition-all p-1 z-50 cursor-pointer"
         aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú de configuración"}
       >
         {isMenuOpen ? <X size={26} /> : <Menu size={26} strokeWidth={2.5} />}
@@ -36,9 +36,8 @@ export const Navbar = ({
       {/* Historial */}
       <button 
         onClick={onHistoryClick}
-        className="text-iron-950 hover:opacity-70 transition-opacity p-1"
+        className="text-iron-950 hover:opacity-70 transition-opacity p-1 cursor-pointer"
         aria-label="Ver historial de entrenamientos"
-        
       >
         <History size={26} strokeWidth={2} />
       </button>
@@ -46,27 +45,27 @@ export const Navbar = ({
       {/* DROPDOWN MENU */}
       {isMenuOpen && (
         <>
-          {/* Overlay para cerrar al hacer clic fuera */}
+          {/* Overlay  */}
           <div 
-            className="fixed inset-0 bg-black/5 z-40" 
+            className="fixed inset-0 bg-black/10 z-80 backdrop-blur-[1px] animate-in fade-in duration-300" 
             onClick={onCloseMenu}
           />
           
-          {/* Tarjeta del Menú */}
-          <div className="absolute top-full left-4 mt-2 w-56 bg-white border border-iron-100 rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-            <div className="p-2">
+          {/* Tarjeta del Menú - Z-index superior al overlay */}
+          <div className="absolute top-[110%] left-6 w-60 bg-white border border-iron-100 rounded-2xl shadow-2xl z-[90] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="p-2.5">
               <button 
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-iron-600 hover:bg-iron-50 rounded-xl transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-4 text-sm font-semibold text-iron-600 hover:bg-iron-50 rounded-xl transition-colors cursor-pointer"
                 onClick={() => { /* Futura config */ onCloseMenu(); }}
               >
                 <Settings size={18} />
                 Configuración
               </button>
               
-              <div className="h-px bg-iron-100 my-1" />
+              <div className="h-px bg-iron-100 my-1.5 mx-2" />
               
               <button 
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-4 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
                 onClick={onLogout}
               >
                 <LogOut size={18} />

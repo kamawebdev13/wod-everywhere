@@ -21,7 +21,14 @@ export const useGenerateWod = () => {
         
         try {
             // Punto 1: Integridad - Tipado estricto en el consumo del servicio
-            const options = await wodService.generate(filters);
+            const [options] = await Promise.all([
+                wodService.generate(filters),
+                new Promise(resolve => setTimeout(resolve, 1500))
+            ]);
+            
+            if (!options || options.length === 0) {
+                throw new Error('NO_OPTIONS_FOUND');
+            }
             
             // Navegación segura con transferencia de estado
             navigate('/generated-wods', { 
@@ -29,13 +36,15 @@ export const useGenerateWod = () => {
                 replace: true 
             });
             
-        } catch {
+        } catch (err){
             /**
              * Punto 2: Robustez
              * Seteamos el mensaje de error en el estado reactivo.
              * La UI será la encargada de renderizar este mensaje de forma elegante.
              */
-            setError('ENGINE_CONNECT_FAILURE: No se pudo conectar con el servicio de generación.');
+           const message = err instanceof Error ? err.message : 'UNKNOWN_FAILURE';
+            setError(`ENGINE_ERROR: ${message}`);
+            console.error('Error generando WOD:', message);
         } finally {
             setLoading(false);
         }
