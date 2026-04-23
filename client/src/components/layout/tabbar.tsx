@@ -34,7 +34,7 @@ export const Tabbar = ({ activeTab, onNavigate }: TabbarProps) => {
           <button 
             key={tab.id}
             onClick={() => onNavigate(tab.id)}
-            className="flex flex-col items-center gap-1 min-w-16 transition-all active:scale-95"
+            className="flex flex-col items-center gap-1 min-w-16 transition-all active:scale-95 cursor-pointer"
             aria-label={tab.aria}
             aria-current={isActive ? 'page' : undefined}
           >
