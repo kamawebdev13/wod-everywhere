@@ -1,55 +1,92 @@
 import { setServers } from "node:dns/promises"; 
-setServers(["1.1.1.1", "8.8.8.8"]); // Forzar DNS para evitar bloqueos de MongoDB Atlas
+// Forzamos DNS para evitar problemas de resolución con MongoDB Atlas en ciertos entornos
+setServers(["1.1.1.1", "8.8.8.8"]); 
 
-import express from 'express';
+import express, { type Application, type Request, type Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet'; 
 import dotenv from 'dotenv';
 import { connectDB } from './config/db-connection';
-import authRouter from './routes/auth-routes'
-import wodRouter from './routes/wod-routes'
+import authRouter from './routes/auth-routes';
+import wodRouter from './routes/wod-routes';
 import { notFound, errorHandler } from './middlewares/error-middleware';
 import debug from 'debug';
 
-// Configuración de entorno y logs
+// Carga de variables de entorno desde el archivo .env
 dotenv.config();
-const log = debug('app:server');
+const log: debug.Debugger = debug('app:server');
 
-const startServer = async () => {
-  try {
-    // 1. Conexión a Base de Datos (Requisito: MongoDB)
-    await connectDB();
+// Inicializamos la instancia de Express
+const app: Application = express();
 
-    const app = express();
+/**
+ * CONFIGURACIÓN DE MIDDLEWARES
+ */
 
-    // 2. Middlewares de Seguridad y Configuración (Requisito: API General)
-    app.use(helmet()); 
-    app.use(cors());
-    app.use(express.json()); // Requisito: Enviar datos en .json
+// Helmet añade cabeceras de seguridad para proteger la API
+app.use(helmet()); 
 
-    // ─── Routes ───────────────────────────────────────────────────────────────────
-    app.use('/api/v1/auth', authRouter);
-    app.use('/api/v1/wods', wodRouter);
-    // ----------------------------------
+/**
+ * CONFIGURACIÓN DE CORS:
+ * Definimos qué dominios tienen permiso para consultar esta API.
+ * Esto soluciona el problema de conexión con tu Frontend en Local.
+ */
+app.use(cors({
+    origin: [
+        'http://localhost:5173', // Entorno local de Vite
+        'https://wod-everywhere.vercel.app' // Futuro dominio de producción
+    ],
+    credentials: true
+}));
 
-    // 3. Manejo de Error 404 - Ruta no encontrada (Requisito: Middlewares)
-    // Se coloca después de las rutas para capturar lo que no coincida
-    app.use(notFound);
+// Permite que el servidor entienda archivos JSON en el cuerpo de las peticiones
+app.use(express.json());
 
-    // 4. Manejo de Error 500 - Error de Servidor (Requisito: Middlewares)
-    app.use(errorHandler);
+/**
+ * CONEXIÓN A LA BASE DE DATOS
+ */
+connectDB().catch((error: unknown) => {
+    log('Error inicial de conexión a DB: %O', error);
+});
 
-    // 5. Encendido del Servidor (Requisito: Express y Entorno)
-    const PORT = process.env.PORT || 3000;
+/**
+ * DEFINICIÓN DE RUTAS
+ */
 
-    app.listen(PORT, () => {
-      log(`Servidor listo en el puerto ${PORT}`);
+// RUTA RAÍZ: Evita el error "Ruta no encontrada" al abrir la URL en el navegador
+app.get('/', (_req: Request, res: Response): void => {
+    res.json({
+        status: 'online',
+        message: 'WOD Everywhere API está funcionando correctamente',
+        version: '1.0.0'
     });
+});
 
-  } catch (error) {
-    log('Error crítico al iniciar el servidor: %O', error);
-    process.exit(1); // Detener el proceso si la conexión inicial falla
-  }
-};
+// Rutas funcionales de la aplicación
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/wods', wodRouter);
 
-startServer();
+/**
+ * MANEJO DE ERRORES
+ */
+
+// Middleware para capturar rutas inexistentes (404)
+app.use(notFound);
+
+// Middleware global para capturar errores internos (500)
+app.use(errorHandler);
+
+/**
+ * LEVANTAMIENTO DEL SERVIDOR
+ * Para Vercel, es importante exportar la app.
+ */
+const PORT: string | number = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        log(`Servidor ejecutándose localmente en el puerto ${PORT}`);
+    });
+}
+
+// Exportamos la app para que Vercel pueda manejar las Serverless Functions
+export default app;
