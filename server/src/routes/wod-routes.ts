@@ -14,10 +14,10 @@ import { authMiddleware } from '../middlewares/auth-middleware'
 
 const wodRouter = Router()
 
-wodRouter.use(authMiddleware)
-
 /** POST  — Generar 3 opciones de WOD */
 wodRouter.post('/generate', getWods)
+
+wodRouter.use(authMiddleware)
 
 /** POST  — guardar un WOD generado*/
 wodRouter.post('/save', saveWorkout)
