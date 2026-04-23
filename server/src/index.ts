@@ -54,7 +54,7 @@ connectDB().catch((error: unknown) => {
  */
 
 // RUTA RAÍZ: Evita el error "Ruta no encontrada" al abrir la URL en el navegador
-app.get('/', (_req: Request, res: Response): void => {
+app.get('/test', (_req: Request, res: Response): void => {
     res.json({
         status: 'online',
         message: 'WOD Everywhere API está funcionando correctamente',
