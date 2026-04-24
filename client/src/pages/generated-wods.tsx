@@ -1,12 +1,11 @@
-import { useEffect, useMemo, type ReactElement } from 'react';
+import { useMemo, type ReactElement } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { type IWod } from '@/types';
 import { WodOptionCard } from '@/components/explore/wod-option-card';
 import { LevelUpBanner } from '@/components/explore/level-up-banner';
-
 /**
  * INTERFAZ: LocationState
- * Define la estructura del estado esperado para evitar el uso de 'any'.
+ * Estructura estricta para el estado de navegación.
  */
 interface LocationState {
   wods: IWod[];
@@ -14,44 +13,57 @@ interface LocationState {
 
 /**
  * Página: GeneratedWodsPage
- * Muestra las opciones de entrenamiento generadas por el motor.
- * Cumple con la rúbrica de listas, deconstrucción y eficiencia.
+ * Muestra las opciones de entrenamiento generadas.
  */
-export const GeneratedWodsPage = (): ReactElement | null => {
-    // Deconstrucción de hooks de navegación
-    const { state } = useLocation();
+export const GeneratedWodsPage = (): ReactElement => {
+    // 1. Obtención de hooks de navegación
+    const location = useLocation();
     const navigate = useNavigate();
 
     /**
-     * Punto 1: Integridad y Rendimiento
-     * Deconstruimos el estado y usamos useMemo para evitar re-cálculos.
-     * Se accede a 'typedState' de forma segura.
+     * 2. Obtención segura de datos
+     * Extraemos los WODs del estado de navegación.
+     * Si no existen (ej. acceso directo por URL), devolvemos un array vacío.
      */
-    const wods = useMemo(() => {
-        const typedState = state as LocationState | null;
+    const wods = useMemo((): IWod[] => {
+        const typedState = location.state as LocationState | null;
         return typedState?.wods || [];
-    }, [state]);
+    }, [location.state]);
 
     /**
-     * EFECTO DE SEGURIDAD
-     * Si no hay WODs (ej. refresco de navegador), redirigimos a /explore.
-     */
-    useEffect(() => {
-        if (wods.length === 0) {
-            navigate('/explore', { replace: true });
-        }
-    }, [wods.length, navigate]);
-
-    /**
-     * Gestión de selección: Navega al detalle del entrenamiento elegido.
+     * 3. Gestión de selección
+     * Navega a la página de detalle con el WOD elegido.
+     * Importante: Pasamos el objeto completo en el estado.
      */
     const handleSelectWod = (wod: IWod): void => {
-        navigate('/selection-page', { state: { selectedWod: wod } });
+        navigate('/selection-page', { 
+            state: { selectedWod: wod },
+            replace: false 
+        });
     };
 
-    // Early return para evitar renderizado sin datos
-    if (wods.length === 0) return null;
-
+    /**
+     * 4. Renderizado Condicional Pasivo
+     * renderizamos una vista de error/vacía si no hay datos.
+     */
+    if (wods.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-[#F8F9FA] px-6 text-center">
+                <h2 className="text-2xl font-black text-zinc-950 uppercase italic">
+                    No hay opciones disponibles
+                </h2>
+                <p className="text-zinc-600 mt-2 mb-8">
+                    Parece que se perdió la conexión con tus resultados.
+                </p>
+                <button 
+                    onClick={() => navigate('/explore')}
+                    className="bg-zinc-950 text-white px-8 py-4 font-bold uppercase italic tracking-tighter"
+                >
+                    Volver a generar
+                </button>
+            </div>
+        );
+    }
     return (
         <div className="animate-fade-in pb-24 px-6 bg-[#F8F9FA] min-h-screen">
             {/* Header con strings directos (sin interpolación innecesaria) */}
