@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useWorkoutTimer } from '@/hooks/use-workout-timer';
 import { workoutService } from '@/services/api'; // Importamos el servicio de persistencia
@@ -19,14 +19,7 @@ export const useSelection = () => {
     const state = location.state as { selectedWod: IWod } | null;
     const selectedWod = state?.selectedWod;
 
-    // Redirección de seguridad si el usuario accede a la URL sin haber pasado por la generación
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (!selectedWod) navigate('/explore', { replace: true });
-        }, 100);
-        return () => clearTimeout(timer);
-    }, [selectedWod, navigate]);
-
+   
     // Configuración del tiempo inicial (basado en la duración del WOD o 20 min por defecto)
     const initialSeconds = (selectedWod?.duration || 20) * 60;
     const { seconds, isActive, toggleTimer } = useWorkoutTimer(initialSeconds);
