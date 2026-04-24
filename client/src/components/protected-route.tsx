@@ -1,33 +1,47 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { ROUTES } from '@/const/routes';
 import debug from 'debug';
 
 const log = debug('app:protected-route');
+
 /**
- * Componente de orden superior para proteger rutas privadas.
- * Ahora maneja el estado de carga para evitar redirecciones falsas.
+ * Componente de Seguridad: ProtectedRoute
+ * Punto 1: Robustez - Doble validación (Estado + Almacenamiento) para evitar redirecciones falsas.
  */
 export const ProtectedRoute = () => {
-  // Extraemos isLoading para bloquear la ejecución hasta que el AuthProvider esté listo
   const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
 
   /**
-   * Mientras la aplicación está recuperando el token del localStorage,
-   * no tomamos ninguna decisión de navegación.
+   * 1. Bloqueo por Carga:
+   * Si el AuthProvider está validando algo, mantenemos al usuario en espera.
    */
   if (isLoading) {
-    log('Comprobando autenticación...');
-    return null; // O un spinner de carga
+    log('Sincronizando estado de sesión...');
+    return null; 
   }
 
-  if (!isAuthenticated) {
-    log('Acceso denegado: Redirigiendo a Login');
-    return <Navigate to={ROUTES.LOGIN} replace />;
+  /**
+   * 2. VALIDACIÓN DE EMERGENCIA (Anti-Bucle):
+   * Si el estado dice que no está autenticado, comprobamos el localStorage físicamente.
+   * Esto evita que la lentitud de React al actualizar el Context te bote al Login.
+   */
+  const hasToken = !!localStorage.getItem('token');
+  const effectivelyAuthenticated = isAuthenticated || hasToken;
+
+  if (!effectivelyAuthenticated) {
+    log('Acceso denegado: No se detectó sesión activa. Redirigiendo a Login.');
+    
+    /**
+     * Guardamos la ruta a la que intentaba ir el usuario para 
+     * poder devolverlo allí después de que haga login.
+     */
+    return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
   }
 
-  log('Acceso concedido a ruta protegida');
+  log('Acceso concedido a: %s', location.pathname);
   
-  // Si está autenticado y no está cargando, renderiza la ruta hija
+  // Si hay luz verde, renderizamos la página solicitada (Outlet)
   return <Outlet />;
 };
