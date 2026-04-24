@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useWorkoutTimer } from '@/hooks/use-workout-timer';
 import { workoutService } from '@/services/api'; // Importamos el servicio de persistencia
@@ -15,9 +15,12 @@ export const useSelection = () => {
     /**
      *  Recuperación segura del estado.
      * Se define la interfaz del estado de navegación para evitar el uso de 'any'.
+     *Usamos useMemo para que no se re-calcule y provoque disparos de efectos innecesarios.
      */
-    const state = location.state as { selectedWod: IWod } | null;
-    const selectedWod = state?.selectedWod;
+    const selectedWod = useMemo(() => {
+        const state = location.state as { selectedWod: IWod } | null;
+        return state?.selectedWod;
+    }, [location.state]);
 
    
     // Configuración del tiempo inicial (basado en la duración del WOD o 20 min por defecto)
