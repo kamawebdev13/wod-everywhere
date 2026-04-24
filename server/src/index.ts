@@ -1,6 +1,6 @@
-import { setServers } from "node:dns/promises"; 
-// Forzamos DNS para evitar problemas de resolución con MongoDB Atlas en ciertos entornos
-setServers(["1.1.1.1", "8.8.8.8"]); 
+// import { setServers } from "node:dns/promises"; 
+// // Forzamos DNS para evitar problemas de resolución con MongoDB Atlas en ciertos entornos
+// setServers(["1.1.1.1", "8.8.8.8"]); 
 
 import express, { type Application, type Request, type Response } from 'express';
 import cors from 'cors';
