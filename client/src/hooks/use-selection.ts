@@ -21,7 +21,10 @@ export const useSelection = () => {
 
     // Redirección de seguridad si el usuario accede a la URL sin haber pasado por la generación
     useEffect(() => {
-        if (!selectedWod) navigate('/explore', { replace: true });
+        const timer = setTimeout(() => {
+            if (!selectedWod) navigate('/explore', { replace: true });
+        }, 100);
+        return () => clearTimeout(timer);
     }, [selectedWod, navigate]);
 
     // Configuración del tiempo inicial (basado en la duración del WOD o 20 min por defecto)
