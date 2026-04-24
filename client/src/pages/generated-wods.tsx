@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { type IWod } from '@/types';
 import { WodOptionCard } from '@/components/explore/wod-option-card';
 import { LevelUpBanner } from '@/components/explore/level-up-banner';
+import { ROUTES } from '@/const/routes';
 
 /**
  * INTERFAZ: LocationState
@@ -36,7 +37,7 @@ export const GeneratedWodsPage = (): ReactElement => {
      * Importante: Pasamos el objeto completo en el estado.
      */
     const handleSelectWod = (wod: IWod): void => {
-        navigate('/selection-page', { 
+        navigate(ROUTES.SELECTION, { 
             state: { selectedWod: wod },
             replace: false 
         });

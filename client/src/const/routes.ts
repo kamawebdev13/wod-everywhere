@@ -20,7 +20,7 @@ export const ROUTES = {
   GENERATED_WODS: '/generated-wods', // Resultados del motor
   
   // --- Flujo de Entrenamiento Activo ---
-  SELECTION: '/selection',   // Entrenamiento en curso (SelectionPage)
+  SELECTION: '/selection-page',   // Entrenamiento en curso (SelectionPage)
   SUMMARY: '/summary',       // Resumen final (ResumeWodPage)
   
   // --- Futuras pestañas ---
