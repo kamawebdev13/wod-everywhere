@@ -45,8 +45,9 @@ app.use(express.json());
 /**
  * CONEXIÓN A LA BASE DE DATOS
  */
-connectDB().catch((error: unknown) => {
-    log('Error inicial de conexión a DB: %O', error);
+app.use(async (_req, _res, next) => {
+    await connectDB();
+    next();
 });
 
 /**
