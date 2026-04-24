@@ -7,6 +7,8 @@ import { ProtectedRoute } from '@/components/protected-route';
 import { MainLayout } from '@/components/layout/main-layout'; // Asegura la ruta correcta
 import { ROUTES } from '@/const/routes';
 
+console.log('API URL:', import.meta.env.VITE_API_URL);
+
 /**
  * CARGA DIFERIDA (Lazy Loading)
  * Punto 3: Arquitectura - Mapeo de páginas.
