@@ -19,7 +19,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
 
   // Estado para el token: Indica si hay una sesión activa
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    return !localStorage.getItem('token'); 
+});
 
   useEffect(() => {
     const initAuth = (): void => {
