@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useWorkoutTimer } from '@/hooks/use-workout-timer';
 import { workoutService } from '@/services/api'; // Importamos el servicio de persistencia
@@ -13,16 +13,18 @@ export const useSelection = () => {
     const navigate = useNavigate();
 
     /**
-     * 1. Recuperación de estado
-     * Usamos useMemo para que no se re-calcule y provoque disparos de efectos innecesarios.
+     *  Recuperación segura del estado.
+     * Se define la interfaz del estado de navegación para evitar el uso de 'any'.
      */
-    const selectedWod = useMemo(() => {
-        const state = location.state as { selectedWod: IWod } | null;
-        return state?.selectedWod;
-    }, [location.state]);
+    const state = location.state as { selectedWod: IWod } | null;
+    const selectedWod = state?.selectedWod;
 
+    // Redirección de seguridad si el usuario accede a la URL sin haber pasado por la generación
+    useEffect(() => {
+        if (!selectedWod) navigate('/explore', { replace: true });
+    }, [selectedWod, navigate]);
 
-    // 2. Configuración del tiempo inicial (basado en la duración del WOD o 20 min por defecto)
+    // Configuración del tiempo inicial (basado en la duración del WOD o 20 min por defecto)
     const initialSeconds = (selectedWod?.duration || 20) * 60;
     const { seconds, isActive, toggleTimer } = useWorkoutTimer(initialSeconds);
 
@@ -34,7 +36,7 @@ export const useSelection = () => {
     });
 
     /**
-     * 3. Alterna el estado de completado de un ejercicio.
+     * Alterna el estado de completado de un ejercicio.
      */
     const toggleComplete = useCallback((name: string) => {
         setWorkoutUI((prev) => ({
@@ -46,7 +48,7 @@ export const useSelection = () => {
     }, []);
 
     /**
-     * 4. Gestiona la expansión visual para mostrar tutoriales.
+     * Gestiona la expansión visual para mostrar tutoriales.
      */
     const handleExpand = useCallback((name: string) => {
         setWorkoutUI((prev) => ({
@@ -56,7 +58,7 @@ export const useSelection = () => {
     }, []);
 
     /**
-     * 5. Formatea segundos a MM:SS.
+     * Formatea segundos a MM:SS.
      */
     const formatTime = (totalSeconds: number): string => {
         const mins = Math.floor(totalSeconds / 60);
@@ -66,7 +68,7 @@ export const useSelection = () => {
 
     /**
      * 
-     * 6. Función asíncrona que utiliza servicios externos y deconstrucción.
+     * Función asíncrona que utiliza servicios externos y deconstrucción.
      */
     const handleFinish = async () => {
         if (!selectedWod || workoutUI.isSaving) return;
@@ -79,7 +81,7 @@ export const useSelection = () => {
             const finalTime = formatTime(secondsElapsed);
 
             /**
-             * 7. PERSISTENCIA: Se prepara el objeto según lo que espera el workoutService.save
+             * PERSISTENCIA: Se prepara el objeto según lo que espera el workoutService.save
              * de tu archivo api.ts.
              */
             const workoutData = {
@@ -89,10 +91,10 @@ export const useSelection = () => {
                 notes: "Entrenamiento completado exitosamente."
             };
 
-            //8.  Llamada real a la API 
+            // Llamada real a la API 
             await workoutService.save(workoutData);
 
-            // 9. Navegación al resumen enviando los datos finales
+            // Navegación al resumen enviando los datos finales
             navigate('/summary', {
                 state: {
                     selectedWod,
