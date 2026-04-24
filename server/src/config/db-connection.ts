@@ -22,9 +22,8 @@ export const connectDB = async (): Promise<void> => {
     const conn = await mongoose.connect(mongoUri);
     log(`MongoDB Conectado: ${conn.connection.host}`);
 
-  } catch (error) {
-    // Solo logueamos el error pero NO salimos del proceso
-    // Si usáramos process.exit(1) aquí, Vercel mataría la función y daría 404 en todas las rutas
+ } catch (error) {
+    console.error('Error conectando a MongoDB:', error);
     log('Error al conectar a MongoDB: %O', error);
-  }
+}
 };
