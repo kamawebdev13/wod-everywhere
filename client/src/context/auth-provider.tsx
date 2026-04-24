@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode, type ReactElement } from 'react';
+import { useState, type ReactNode, type ReactElement } from 'react';
 import { AuthContext } from '@/context/auth-context'; 
 import { authService } from '@/services/api'; 
 import type { IUser } from '@/types'; 
@@ -7,64 +7,67 @@ import debug from 'debug';
 const log = debug('app:auth-provider');
 
 /**
- * Proveedor del Contexto (AuthProvider).
- * Es el componente que envuelve la App y reparte la información.
+ * PROVEEDOR DE AUTENTICACIÓN (AuthProvider)
+ * Punto 1: Arquitectura - Sincronización inmediata con localStorage para evitar expulsiones.
  */
 export const AuthProvider = ({ children }: { children: ReactNode }): ReactElement => {
-  // Inicialización perezosa para evitar errores de parseo
+  
+  /**
+   * 1. Inicialización síncrona del Usuario.
+   * Se ejecuta una sola vez al instanciar el estado.
+   */
   const [user, setUser] = useState<IUser | null>(() => {
     const savedUser = localStorage.getItem('user');
-    return savedUser ? (JSON.parse(savedUser) as IUser) : null;
+    if (!savedUser) return null;
+    try {
+      return JSON.parse(savedUser) as IUser;
+    } catch (error) {
+      log('Error al parsear el usuario del almacenamiento local:', error);
+      return null;
+    }
   });
 
-  // Estado para el token: Indica si hay una sesión activa
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
-  const [isLoading, setIsLoading] = useState<boolean>(() => {
-    return !localStorage.getItem('token'); 
-});
-
-  useEffect(() => {
-    const initAuth = (): void => {
-      const savedUser = localStorage.getItem('user');
-      const savedToken = localStorage.getItem('token');
-
-      if (savedUser && savedToken) {
-        try {
-          setUser(JSON.parse(savedUser) as IUser);
-          setToken(savedToken);
-        } catch {
-          authService.logout();
-        }
-      }
-      
-      // CAMBIO DE ESTADO: Aquí usamos la función para que deje de ser "unused"
-      setIsLoading(false);
-    };
-
-    initAuth();
-  }, []);
+  /**
+   * 2. Inicialización síncrona del Token.
+   */
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
 
   /**
-   * Login Global: Sincroniza API, localStorage y Estado de React.
+   * 3. Gestión de Carga inteligente.
+   * Si ya detectamos un token en el paso anterior, isLoading nace en false.
+   * Esto evita que el ProtectedRoute bloquee el acceso durante el primer render.
+   */
+  const [isLoading] = useState<boolean>(() => {
+    return !localStorage.getItem('token');
+  });
+
+  /**
+   * ACCIÓN: Login
+   * Sincroniza la API con el estado de React y la persistencia local.
    */
   const login = async (email: string, password: string): Promise<void> => {
     const data = await authService.login(email, password);
     
-    // Actualizamos estados locales
+    // Guardado en almacenamiento físico
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    // Actualización del estado reactivo
     setToken(data.token);
     setUser(data.user);
     
-    log('Sesión iniciada: %s', data.user.email);
+    log('Sesión iniciada con éxito para: %s', data.user.email);
   };
 
   /**
-   * Logout Global: Limpia estado y almacenamiento.
+   * ACCIÓN: Logout
+   * Limpia tanto el estado de la aplicación como el almacenamiento local.
    */
   const logout = (): void => {
     authService.logout();
     setToken(null);
     setUser(null);
-    log('Sesión cerrada');
+    log('Sesión cerrada y limpieza de datos completada');
   };
 
   return (
@@ -73,6 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): ReactElemen
         user, 
         login, 
         logout, 
+        // El estado de autenticación depende directamente de la existencia del token
         isAuthenticated: !!token,
         isLoading
       }}
