@@ -54,7 +54,7 @@ connectDB().catch((error: unknown) => {
  */
 
 // RUTA RAÍZ: Evita el error "Ruta no encontrada" al abrir la URL en el navegador
-app.get('/test', (_req: Request, res: Response): void => {
+app.get('/', (_req: Request, res: Response): void => {
     res.json({
         status: 'online',
         message: 'WOD Everywhere API está funcionando correctamente',
@@ -62,6 +62,10 @@ app.get('/test', (_req: Request, res: Response): void => {
     });
 });
 
+// RUTA TEST
+app.get('/test', (_req: Request, res: Response): void => {
+    res.json({ message: 'test ok' });
+});
 // Rutas funcionales de la aplicación
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/wods', wodRouter);
