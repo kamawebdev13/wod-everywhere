@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart} from 'lucide-react';
 import FeatureCard from '@/components/common/feature-card';
+import { ROUTES } from '@/const/routes';
 
 // Importación Capas de arquitectura
 import { useHomeData } from '@/hooks/use-home-data';
@@ -26,10 +27,10 @@ export const HomePage = (): ReactElement => {
     const handleStartWorkout = () => {
         if (latestWorkout?.wodId) {
             // Si tiene uno reciente, vamos a repetir selección
-            navigate('/selection', { state: { selectedWod: latestWorkout.wodId } });
+            navigate(ROUTES.SELECTION, { state: { selectedWod: latestWorkout.wodId } });
         }else {
             // SI NO TIENE NADA (Usuario nuevo), lo mandamos a EXPLORE
-            navigate('/explore'); 
+            navigate(ROUTES.EXPLORE); 
         }
     };
 
