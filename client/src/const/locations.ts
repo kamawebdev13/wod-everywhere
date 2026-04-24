@@ -40,4 +40,4 @@ export const locations = [
 ] as const;
 
 // Tipo para usar en TypeScript si se requiere
-export type LocationId = typeof LOCATIONS[number]['id'];
+export type LocationId = typeof locations[number]['id'];
