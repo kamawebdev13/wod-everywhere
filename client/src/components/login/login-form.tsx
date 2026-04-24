@@ -62,7 +62,7 @@ export const LoginForm = ({
             </p>
         )}
 
-        <div className="pt-6 justify-center">
+        <div className="pt-6 flex justify-center">
             <Button
                 type="submit"
                 disabled={isLoading}
