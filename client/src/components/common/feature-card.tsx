@@ -39,7 +39,7 @@ const FeatureCard = ({
       ${showBorder ? `border-l-4 ${borderColor}` : 'border-l-0'} 
     `}>
       {Icon && <Icon className={`w-7 h-7 mb-4 ${iconColor}`} />}
-      <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 wrap-break-words leading-tight">{title}</h3>
+      <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 break-words leading-tight">{title}</h3>
       
       {/* Si hay children lo muestra. Si no, muestra la descripción */}
       {children ? children : (
