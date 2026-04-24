@@ -62,11 +62,11 @@ export const LoginForm = ({
             </p>
         )}
 
-        <div className="pt-6">
+        <div className="pt-6 justify-center">
             <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center"
+                className="h-16 px-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center"
             >
                 {isLoading ? 'SYNCING...' : 'LOGIN'}
             </Button>
