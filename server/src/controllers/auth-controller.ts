@@ -119,18 +119,15 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
         // Evitamos que el usuario pueda cambiarse el rol a sí mismo mediante este endpoint
         if (updates.role) delete updates.role;
 
+        // Buscamos y actualizamos en la DB (ejemplo con Mongoose/MongoDB)
         const updatedUser = await User.findByIdAndUpdate(
-            userId,
-            { $set: updates },
-            { new: true, runValidators: true }
+            userId, 
+            { $set: updates }, 
+            { new: true } // Para que devuelva el usuario ya cambiado
         ).select('-password');
 
-        if (!updatedUser) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
-
-        return res.status(200).json(updatedUser);
-    } catch (error: unknown) {
-        next(error);
+        res.json(updatedUser);
+    } catch (error) {
+        res.status(500).json({ error: "Error al actualizar el perfil" });
     }
 };
