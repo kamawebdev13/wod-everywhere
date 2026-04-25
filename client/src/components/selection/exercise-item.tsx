@@ -12,20 +12,22 @@ interface ExerciseItemProps {
     isExpanded: boolean;
     onExpand: (name: string) => void;
     onToggle: (name: string) => void;
+    videoUrl?: string;
 }
 
 /**
  * COMPONENTE: ExerciseItem
  * Renderiza la fila de un ejercicio con soporte para expansión de video.
  */
-export const ExerciseItem = ({ 
-    exercise, 
-    isDone, 
-    isExpanded, 
-    onExpand, 
-    onToggle 
+export const ExerciseItem = ({
+    exercise,
+    isDone,
+    isExpanded,
+    onExpand,
+    onToggle,
+    videoUrl
 }: ExerciseItemProps): ReactElement => {
-    
+
     /**
      * RÚBRICA: Deconstrucción de parámetros.
      * Extraemos las propiedades del objeto 'exercise' para evitar repeticiones 
@@ -34,16 +36,15 @@ export const ExerciseItem = ({
     const { name, reps, weight } = exercise;
 
     return (
-        <div 
-            className={`snap-center mb-4 transition-all duration-300 rounded-sm border ${
-                isExpanded ? 'bg-zinc-50 border-zinc-200 shadow-sm' : 'bg-white border-transparent'
-            }`}
+        <div
+            className={`snap-center mb-4 transition-all duration-300 rounded-sm border ${isExpanded ? 'bg-zinc-50 border-zinc-200 shadow-sm' : 'bg-white border-transparent'
+                }`}
         >
             <div className="flex items-center p-4 gap-4">
-                
+
                 {/* ACCIÓN: Toggle Tutorial
                     */}
-                <button 
+                <button
                     onClick={() => onExpand(name)}
                     aria-label={isExpanded ? "Ocultar tutorial" : "Ver tutorial"}
                     title={isExpanded ? "Ocultar tutorial" : "Ver tutorial"}
@@ -59,9 +60,8 @@ export const ExerciseItem = ({
                 {/* INFORMACIÓN: Datos del Movimiento 
                     Se utilizan las variables deconstruidas (name, reps, weight). */}
                 <div className="flex-1 text-left">
-                    <h4 className={`font-bold uppercase text-lg leading-tight italic transition-colors ${
-                        isDone ? 'line-through text-zinc-300' : 'text-zinc-950'
-                    }`}>
+                    <h4 className={`font-bold uppercase text-lg leading-tight italic transition-colors ${isDone ? 'line-through text-zinc-300' : 'text-zinc-950'
+                        }`}>
                         {reps && `${reps} `}{name}
                     </h4>
                     {weight && (
@@ -73,15 +73,15 @@ export const ExerciseItem = ({
 
                 {/* ACCIÓN: Toggle Completed
                     Permite al atleta marcar el progreso. El icono cambia de color reactivamente. */}
-                <button 
-                    onClick={() => onToggle(name)} 
+                <button
+                    onClick={() => onToggle(name)}
                     aria-label={isDone ? "Marcar como pendiente" : "Marcar como completado"}
                     title={isDone ? "Marcar como pendiente" : "Marcar como completado"}
                     className="focus:outline-none hover:scale-110 transition-transform cursor-pointer"
                 >
-                    <CheckCircle2 
-                        size={28} 
-                        className={isDone ? 'text-green-500' : 'text-zinc-200'} 
+                    <CheckCircle2
+                        size={28}
+                        className={isDone ? 'text-green-500' : 'text-zinc-200'}
                     />
                 </button>
             </div>
@@ -90,10 +90,20 @@ export const ExerciseItem = ({
                 Punto 3 (Arquitectura): Solo se renderiza si 'isExpanded' es true para optimizar el DOM. */}
             {isExpanded && (
                 <div className="px-4 pb-4 animate-in slide-in-from-top-2 duration-200">
-                    <div className="aspect-video bg-black rounded-sm flex items-center justify-center">
-                        <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest">
-                            Video Tutorial
-                        </span>
+                    <div className="aspect-video bg-black rounded-sm overflow-hidden">
+                        {videoUrl ? (
+                            <iframe
+                                src={videoUrl}
+                                title={name}
+                                className="w-full h-full"
+                                allowFullScreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            />
+                        ) : (
+                            <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest flex items-center justify-center h-full">
+                                Sin video disponible
+                            </span>
+                        )}
                     </div>
                 </div>
             )}

@@ -26,22 +26,22 @@ export const SelectionPage = (): ReactElement | null => {
     } = useSelection();
 
     // 2. Punto 2 (Robustez): Si no hay WOD por refresco de página, evitamos crash
-   if (!selectedWod) {
-    return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
-            <p className="text-white animate-pulse">PREPARANDO ENTRENAMIENTO...</p>
-        </div>
-    );
-}
+    if (!selectedWod) {
+        return (
+            <div className="min-h-screen bg-black flex items-center justify-center">
+                <p className="text-white animate-pulse">PREPARANDO ENTRENAMIENTO...</p>
+            </div>
+        );
+    }
 
-    const { type, title, exercises } = selectedWod;
+    const { type, title, exercises, videoUrl } = selectedWod;
     const { completedExercises, expandedExercise } = workoutUI;
 
     return (
         <div className="flex flex-col h-screen bg-white animate-fade-in overflow-hidden">
-            
+
             {/* Sección: Timer y Título */}
-            <SelectionHeader 
+            <SelectionHeader
                 type={type}
                 title={title}
                 isActive={isActive} // Forma corta si pasas variables booleanas
@@ -50,21 +50,22 @@ export const SelectionPage = (): ReactElement | null => {
             />
 
             {/* Sección: Lista de Ejercicios (Pasamos props deconstruidas) */}
-            <ActiveMovementsList 
+            <ActiveMovementsList
                 exercises={exercises}
                 completedExercises={completedExercises}
                 expandedExercise={expandedExercise}
                 onExpand={handleExpand}
                 onToggle={toggleComplete}
+                videoUrl={videoUrl}
             />
 
             {/* Sección: Botonera de Control */}
-            <WorkoutControls 
+            <WorkoutControls
                 isActive={isActive}
                 onToggle={toggleTimer}
                 onFinish={handleFinish}
             />
-            
+
         </div>
     );
 };
