@@ -36,12 +36,12 @@ export const FeaturedWodSection = ({
                     X
                 </div>
                 
-                <div className="relative z-10 text-left">
+                <div className="relative z-10 text-left w-full">
                     <span className="inline-block bg-red-100 text-red-800 text-[10px] font-black px-3 py-1 uppercase tracking-tighter mb-6">
                         FEATURED WORKOUT
                     </span>
                     
-                    <h2 className="text-6xl font-black text-black italic uppercase leading-none mb-10 tracking-tighter break-words overflow-hidden">
+                    <h2 className="text-5xl md:text-7xl font-black text-black italic uppercase leading-[0.9] mb-10 tracking-tighter break-all block w-full">
                         {loading ? "..." : wodTitle}
                     </h2>
                     
