@@ -109,12 +109,13 @@ export const RegisterOneForm = ({
         </div>
 
         {/* ACCIÓN: Botón de envío - Estado deshabilitado calculado en el Hook */}
-        <div className="pt-6 flex justify-center">
+        <div className="pt-6 flex justify-center w-full">
             <Button
                 type="submit"
                 disabled={isSubmitDisabled}
-                className="h-16 px-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center"
+                className="h-16 w-full md:w-auto px-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center gap-2"
             >
+                {/* Contenido del botón con espaciado interno definido */}
                 NEXT <ArrowRight size={18} />
             </Button>
         </div>
