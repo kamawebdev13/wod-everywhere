@@ -11,7 +11,7 @@ interface MovementsListProps {
     expandedExercise: string | null;
     onExpand: (name: string) => void;
     onToggle: (name: string) => void;
-    videoUrl?: string;
+    
 }
 
 /**
@@ -25,7 +25,7 @@ export const ActiveMovementsList = ({
     expandedExercise,
     onExpand,
     onToggle,
-    videoUrl
+   
 }: MovementsListProps) => (
     <div className="relative flex-1 mt-6 overflow-hidden">
         {/* Gradiente superior: Efecto visual de desvanecimiento para el scroll.
@@ -50,7 +50,7 @@ export const ActiveMovementsList = ({
                         isExpanded={expandedExercise === name}
                         onExpand={onExpand}
                         onToggle={onToggle}
-                        videoUrl={videoUrl}
+                       
                     />
                 );
             })}

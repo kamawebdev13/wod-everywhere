@@ -3,6 +3,7 @@ export interface IExercise {
   name: string;
   reps?: number;
   weight?: string;
+  videoUrl?: string;
 }
 
 export interface IWod {

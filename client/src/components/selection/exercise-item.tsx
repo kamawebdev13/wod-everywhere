@@ -12,7 +12,7 @@ interface ExerciseItemProps {
     isExpanded: boolean;
     onExpand: (name: string) => void;
     onToggle: (name: string) => void;
-    videoUrl?: string;
+    
 }
 
 /**
@@ -25,7 +25,7 @@ export const ExerciseItem = ({
     isExpanded,
     onExpand,
     onToggle,
-    videoUrl
+   
 }: ExerciseItemProps): ReactElement => {
 
     /**
@@ -33,7 +33,7 @@ export const ExerciseItem = ({
      * Extraemos las propiedades del objeto 'exercise' para evitar repeticiones 
      * y mejorar la legibilidad del JSX.
      */
-    const { name, reps, weight } = exercise;
+    const { name, reps, weight, videoUrl } = exercise;
 
     return (
         <div
