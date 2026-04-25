@@ -68,12 +68,12 @@ export const Navbar = ({
                     {/* PANEL DE OPCIONES: Posicionamiento absoluto relativo al header */}
                     <div className="absolute top-[110%] left-6 w-60 bg-white border border-zinc-100 rounded-2xl shadow-2xl z-[90] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
                         <div className="p-2.5">
-                            
+
                             {/* Opción: Configuración */}
                             <button
                                 className="w-full flex items-center gap-3 px-4 py-4 text-sm font-semibold text-zinc-600 hover:bg-zinc-50 rounded-xl transition-colors cursor-pointer outline-none group"
                                 onClick={() => {
-                                    navigate('/settings');
+                                    navigate('/settings-page');
                                     onCloseMenu();         // Cierra el menú lateral
                                 }}
                             >
