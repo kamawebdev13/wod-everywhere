@@ -10,7 +10,7 @@ import { ActivityHistory } from '@/components/profile/activity-history';
  * Punto 3: Arquitectura basada en Smart/Dumb components.
  */
 export const ProfilePage = (): ReactElement => {
-    // 1. Hook de lógica: Maneja la hidratación y sincronización (Punto 2: Robustez)
+    // 1. Hook de lógica: Maneja el inyectado y sincronización (Punto 2: Robustez)
     const { user, workouts, hasError, isLoading } = useProfile();
 
     return (

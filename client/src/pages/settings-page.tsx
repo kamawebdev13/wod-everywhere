@@ -7,7 +7,7 @@ import { type AthleteLevel } from '@/types/user';
 
 /**
  * PÁGINA: SettingsPage
- * Refactorizada bajo principios de arquitectura modular y rúbrica estricta.
+ * 
  */
 export const SettingsPage = (): ReactElement => {
     const { user, loading, handleLogout, updateUserInfo } = useSettings();
@@ -45,7 +45,7 @@ export const SettingsPage = (): ReactElement => {
                 {/* Bloque: Perfil */}
                 <section>
                     <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-red-600 mb-4">Athlete Profile</h3>
-                    {/* El nombre ahora podría abrir un prompt para editarlo */}
+                    {/* El nombre ahora puede abrir un prompt para editarlo */}
                     <SettingsTile
                         label="Name"
                         value={user.name}

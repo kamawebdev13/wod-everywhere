@@ -1,5 +1,6 @@
 import { User, Settings, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import type { IUser } from '@/types';
 
 /**
@@ -8,11 +9,11 @@ import type { IUser } from '@/types';
  * Se añade validación de arrays para evitar errores de renderizado.
  */
 export const ProfileHero = ({ user }: { user: IUser }) => {
-    
+
     // Manejador temporal para el botón de configuración
+    const navigate = useNavigate();
     const handleSettingsClick = (): void => {
-        console.log('Configuración: Próximamente...');
-        // Por ahora no navegamos para evitar el rebote al login
+        navigate('/settings-page');
     };
 
     return (
@@ -30,8 +31,8 @@ export const ProfileHero = ({ user }: { user: IUser }) => {
                 </div>
 
                 {/* BOTÓN DE AJUSTES: Desconectado temporalmente */}
-                <Button 
-                    variant="ghost" 
+                <Button
+                    variant="ghost"
                     onClick={handleSettingsClick}
                     className="flex items-center justify-center bg-gray-50 rounded-xl text-zinc-950 w-10 h-10 p-0"
                 >
@@ -47,13 +48,13 @@ export const ProfileHero = ({ user }: { user: IUser }) => {
                     {user.level || 'RECRUIT'} ENGINE
                 </p>
             </div>
-            
+
             {/* TAGS: Validamos que existan antes de mapear */}
             <div className="flex flex-wrap gap-2 mt-4">
                 {user.tags && user.tags.length > 0 ? (
                     user.tags.map((tag: string) => (
-                        <span 
-                            key={tag} 
+                        <span
+                            key={tag}
                             className="text-[9px] font-black bg-gray-100 text-gray-500 px-3 py-1.5 rounded-sm uppercase tracking-widest"
                         >
                             {tag}

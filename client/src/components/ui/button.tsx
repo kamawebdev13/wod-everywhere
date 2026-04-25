@@ -11,7 +11,7 @@ export const Button = ({
   ...props 
 }: ButtonProps) => {
   
-  // 3. Clases base comunes con CURSOR-POINTER incluido
+  // 3. Clases base comunes 
   const baseClasses = "cursor-pointer font-body text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-iron-800 disabled:cursor-not-allowed disabled:opacity-50";
   
   // 4. Clases específicas por variante

@@ -52,7 +52,7 @@ export interface IUser {
   email: string;
   name: string;
   role: 'user' | 'admin';
-  avatarUrl?: string;       // Foto subida por el usuario
+  avatarUrl?: string;       // Foto subida por el usuario en el futuro ahora no es posible
   level: 'BEGINNER' | 'INTERMEDIATE' | 'ELITE';         
   tags: string[];          // Ej: ["Functional Fitness", "Endurance Focus"]S
   stats: IUserStats;       // Objeto con las estadísticas dinámicas

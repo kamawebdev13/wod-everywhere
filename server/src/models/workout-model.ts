@@ -6,7 +6,7 @@ export interface IWorkout extends Document {
   wodId: Types.ObjectId;  // Qué Wod hizo (Relación)
   duration: string;       // Tiempo total (ej: "15:40")
   score: string;          // Ej: "15 rounds" o "RX"
-  notes: string;          // "Me costaron las flexiones"
+  notes: string;          // "Me costaron las flexiones...si Luis"
   date: Date;
 }
 // 2. Definimos el Schema 

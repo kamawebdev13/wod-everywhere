@@ -29,7 +29,7 @@ export const ExerciseItem = ({
 }: ExerciseItemProps): ReactElement => {
 
     /**
-     * RÚBRICA: Deconstrucción de parámetros.
+     *Deconstrucción de parámetros.
      * Extraemos las propiedades del objeto 'exercise' para evitar repeticiones 
      * y mejorar la legibilidad del JSX.
      */
