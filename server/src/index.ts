@@ -34,7 +34,8 @@ app.use(helmet());
 app.use(cors({
     origin: [
         'http://localhost:5173', // Entorno local de Vite
-        'https://wod-everywhere.vercel.app' // Futuro dominio de producción
+        'https://wod-everywhere.vercel.app', 
+        'https://wod-everywhere-atv9.vercel.app'
     ],
     credentials: true
 }));
