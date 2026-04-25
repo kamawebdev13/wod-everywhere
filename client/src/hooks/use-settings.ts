@@ -24,6 +24,22 @@ export const useSettings = () => {
     }, [navigate]);
 
     /**
+     * Actualiza una propiedad del perfil en el backend y el estado local.
+     */
+    const updateUserInfo = async (updates: Partial<IUser>): Promise<void> => {
+        try {
+            // Llamada al endpoint PATCH /auth/profile
+            const updatedUser = await authService.updateProfile(updates);
+            // Sincronizamos el estado local para que la UI se actualice
+            setUser(updatedUser);
+            // Opcional: Actualizar el localStorage para que el cambio persista al recargar
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+        } catch {
+            console.error("Failed to update profile");
+        }
+    };
+
+    /**
      * Efecto de inicialización: Recupera los datos del perfil al cargar.
      */
     useEffect(() => {
@@ -52,6 +68,7 @@ export const useSettings = () => {
     return {
         user,
         loading,
-        handleLogout
+        handleLogout,
+        updateUserInfo
     };
 };
