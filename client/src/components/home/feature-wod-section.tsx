@@ -41,7 +41,7 @@ export const FeaturedWodSection = ({
                         FEATURED WORKOUT
                     </span>
                     
-                    <h2 className="text-6xl font-black text-black italic uppercase leading-[0.8] mb-10 tracking-tighter wrap-break-word">
+                    <h2 className="text-6xl font-black text-black italic uppercase leading-none mb-10 tracking-tighter break-words overflow-hidden">
                         {loading ? "..." : wodTitle}
                     </h2>
                     
