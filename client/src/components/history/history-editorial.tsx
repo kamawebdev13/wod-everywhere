@@ -1,16 +1,18 @@
 import { type ReactElement } from 'react';
+import { history_photo_url } from '@/const/images';
 
 export const HistoryEditorial = (): ReactElement => {
   return (
     <div className="pt-4 pb-12">
       <div className="relative w-full h-64 rounded-2xl overflow-hidden shadow-2xl bg-zinc-900 group">
         <img 
-          src="https://images.unsplash.com/photo-1541534741688-6078c6bd35e5?q=80&w=2070&auto=format&fit=crop" 
+          src={ history_photo_url}
           alt="Athletic Performance"
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover opacity-60 transition-transform duration-1000 group-hover:scale-110"
           onLoad={(e) => {
+            // Manejo de la transición una vez descargado el asset de Supabase
             e.currentTarget.classList.remove('opacity-0');
             e.currentTarget.classList.add('opacity-60');
           }}

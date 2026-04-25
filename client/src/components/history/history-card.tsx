@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 import { MessageSquare } from 'lucide-react'; // Importamos el icono para las notas
 import type { IWorkout } from '@/types';
 
+
 interface HistoryCardProps {
   workout: IWorkout;
   isFirst: boolean;

@@ -1,8 +1,10 @@
+import { resume_photo_url  } from '@/const/images';
+
 export const ResumeMotivation = () => (
   <section className="px-6 mt-6">
     <div className="w-full h-48 rounded-xl overflow-hidden shadow-md bg-zinc-200">
       <img 
-        src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=1000&auto=format&fit=crop" 
+        src={resume_photo_url } 
         alt="Motivation"
         loading="lazy"
         decoding="async"

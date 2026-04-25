@@ -3,6 +3,7 @@ import { useHistory } from '@/hooks/use-history';
 import { HistoryCard } from '@/components/history/history-card';
 import { HistoryEditorial } from '@/components/history/history-editorial';
 
+
 export const HistoryPage = (): ReactElement => {
   const { history, isLoading, error } = useHistory(); // Lógica delegada al hook
 
