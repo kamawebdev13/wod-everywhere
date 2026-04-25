@@ -90,11 +90,12 @@ export const ExerciseItem = ({
                 Punto 3 (Arquitectura): Solo se renderiza si 'isExpanded' es true para optimizar el DOM. */}
             {isExpanded && (
                 <div className="px-4 pb-4 animate-in slide-in-from-top-2 duration-200">
-                    <div className="aspect-video bg-black rounded-sm overflow-hidden">
+                    <div className="w-full max-w-[450px] aspect-video bg-zinc-900 rounded-lg overflow-hidden shadow-2xl border border-zinc-200">
                         {videoUrl ? (
                             <iframe
                                 src={videoUrl}
                                 title={name}
+                                loading="lazy"
                                 className="w-full h-full"
                                 allowFullScreen
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

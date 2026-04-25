@@ -28,10 +28,9 @@ const wods = [
         equipment: ["barbell", "pullup_bar"],
         target: ["legs", "upper"],
         exercises: [
-            { name: "Back Squat", reps: 10, weight: "60kg" },
-            { name: "Pull-ups", reps: 10, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/ultWZbUMPL8"
+            { name: "Back Squat", reps: 10, weight: "60kg", videoUrl: "https://www.youtube.com/embed/ultWZbUMPL8" },
+            { name: "Pull-ups", reps: 10, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/eGo4IYlbE5g" }
+        ]
     },
     {
         title: "Mountain Warrior",
@@ -41,11 +40,10 @@ const wods = [
         equipment: ["none", "bodyweight"],
         target: ["legs", "cardio"],
         exercises: [
-            { name: "Hill Sprints", reps: 5, weight: "Bodyweight" },
-            { name: "Hiking Lunges", reps: 20, weight: "Bodyweight" },
-            { name: "Mountain Climbers", reps: 40, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/D3_tZ_0oD9U"
+            { name: "Hill Sprints", reps: 5, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/D3_tZ_0oD9U" },
+            { name: "Hiking Lunges", reps: 20, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/L219gBDGBCg" },
+            { name: "Mountain Climbers", reps: 40, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/nmwgirgXLYM" }
+        ]
     },
     {
         title: "Beach Burner",
@@ -55,11 +53,10 @@ const wods = [
         equipment: ["none", "bodyweight"],
         target: ["fullbody", "cardio"],
         exercises: [
-            { name: "Sand Run", reps: 1, weight: "60s" },
-            { name: "Bear Crawl en Arena", reps: 1, weight: "30s" },
-            { name: "Burpees", reps: 15, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/6KLSCi2pGhQ"
+            { name: "Sand Run", reps: 1, weight: "60s", videoUrl: "https://www.youtube.com/embed/6KLSCi2pGhQ" },
+            { name: "Bear Crawl en Arena", reps: 1, weight: "30s", videoUrl: "https://www.youtube.com/embed/DHD1-2P94DI" },
+            { name: "Burpees", reps: 15, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/dZgVxmf6jkA" }
+        ]
     },
     {
         title: "Home Strength",
@@ -69,11 +66,10 @@ const wods = [
         equipment: ["dumbbells"],
         target: ["upper", "core"],
         exercises: [
-            { name: "Dumbbell Row", reps: 10, weight: "12kg" },
-            { name: "Push-up", reps: 15, weight: "Bodyweight" },
-            { name: "Sit-up", reps: 20, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/roCP6wCXPqo"
+            { name: "Dumbbell Row", reps: 10, weight: "12kg", videoUrl: "https://www.youtube.com/embed/roCP6wCXPqo" },
+            { name: "Push-up", reps: 15, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/IODxDxX7oi4" },
+            { name: "Sit-up", reps: 20, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/jDwoBqPH0jk" }
+        ]
     },
     {
         title: "Park Essentials",
@@ -83,11 +79,10 @@ const wods = [
         equipment: ["pullup_bar"],
         target: ["fullbody"],
         exercises: [
-            { name: "Pull-up", reps: 8, weight: "Bodyweight" },
-            { name: "Air Squat", reps: 20, weight: "Bodyweight" },
-            { name: "Toes to Bar", reps: 10, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/eGo4IYlbE5g"
+            { name: "Pull-up", reps: 8, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/eGo4IYlbE5g" },
+            { name: "Air Squat", reps: 20, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/C_VtOYc6j5c" },
+            { name: "Toes to Bar", reps: 10, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/6dHvNBDmJDM" }
+        ]
     },
     {
         title: "High Altitude HIIT",
@@ -97,11 +92,10 @@ const wods = [
         equipment: ["none", "bodyweight"],
         target: ["cardio", "fullbody"],
         exercises: [
-            { name: "Jumping Jacks", reps: 50, weight: "Bodyweight" },
-            { name: "Burpees", reps: 10, weight: "Bodyweight" },
-            { name: "High Knees", reps: 40, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/ml6cT4AZdqI"
+            { name: "Jumping Jacks", reps: 50, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/ml6cT4AZdqI" },
+            { name: "Burpees", reps: 10, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/dZgVxmf6jkA" },
+            { name: "High Knees", reps: 40, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/ZZZoCNMU48U" }
+        ]
     },
     {
         title: "Ocean Core",
@@ -111,11 +105,10 @@ const wods = [
         equipment: ["none", "bodyweight"],
         target: ["core"],
         exercises: [
-            { name: "Plank", reps: 1, weight: "60s" },
-            { name: "V-up", reps: 15, weight: "Bodyweight" },
-            { name: "Hollow Body Hold", reps: 1, weight: "30s" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/DHD1-2P94DI"
+            { name: "Plank", reps: 1, weight: "60s", videoUrl: "https://www.youtube.com/embed/pSHjTRCQxIw" },
+            { name: "V-up", reps: 15, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/7UVgs18Y1P4" },
+            { name: "Hollow Body Hold", reps: 1, weight: "30s", videoUrl: "https://www.youtube.com/embed/LlDNef_Ztsc" }
+        ]
     },
     {
         title: "Kettlebell Power",
@@ -125,10 +118,9 @@ const wods = [
         equipment: ["kettlebell"],
         target: ["fullbody", "strength"],
         exercises: [
-            { name: "Kettlebell Swing", reps: 15, weight: "16kg" },
-            { name: "Goblet Squat", reps: 12, weight: "16kg" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/sSESeQAir2M"
+            { name: "Kettlebell Swing", reps: 15, weight: "16kg", videoUrl: "https://www.youtube.com/embed/sSESeQAir2M" },
+            { name: "Goblet Squat", reps: 12, weight: "16kg", videoUrl: "https://www.youtube.com/embed/MxsFDhcyFyE" }
+        ]
     },
     {
         title: "Street Workout Pro",
@@ -138,11 +130,10 @@ const wods = [
         equipment: ["pullup_bar"],
         target: ["upper"],
         exercises: [
-            { name: "Muscle-up", reps: 3, weight: "Bodyweight" },
-            { name: "Dip en paralelas", reps: 10, weight: "Bodyweight" },
-            { name: "Chin-up", reps: 8, weight: "Bodyweight" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/19-SScBTMRU"
+            { name: "Muscle-up", reps: 3, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/19-SScBTMRU" },
+            { name: "Dip en paralelas", reps: 10, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/2z8JmcrW-As" },
+            { name: "Chin-up", reps: 8, weight: "Bodyweight", videoUrl: "https://www.youtube.com/embed/brhRXlOhsAM" }
+        ]
     },
     {
         title: "Heavy Metal Cross",
@@ -152,11 +143,10 @@ const wods = [
         equipment: ["barbell", "box"],
         target: ["fullbody"],
         exercises: [
-            { name: "Thruster", reps: 15, weight: "40kg" },
-            { name: "Box Jump", reps: 15, weight: "60cm" },
-            { name: "Power Clean", reps: 10, weight: "50kg" }
-        ],
-        videoUrl: "https://www.youtube.com/embed/L219gBDGBCg"
+            { name: "Thruster", reps: 15, weight: "40kg", videoUrl: "https://www.youtube.com/embed/L219gBDGBCg" },
+            { name: "Box Jump", reps: 15, weight: "60cm", videoUrl: "https://www.youtube.com/embed/52r_Ul5k03g" },
+            { name: "Power Clean", reps: 10, weight: "50kg", videoUrl: "https://www.youtube.com/embed/GHdMnLWMXMQ" }
+        ]
     }
 ];
 const users = [

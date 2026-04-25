@@ -5,11 +5,12 @@ interface IExercise {
   name: string;
   reps?: number;
   weight?: string; // Ej: "20kg" o "Bodyweight"
+  videoUrl?: string;
 }
 
 export interface IWod extends Document {
   title: string;
-  type: string; 
+  type: string;
   duration: number;
   location: string[];
   equipment: string[];
@@ -21,18 +22,20 @@ export interface IWod extends Document {
 const exerciseSchema = new Schema<IExercise>({
   name: { type: String, required: true },
   reps: { type: Number },
-  weight: { type: String }
+  weight: { type: String },
+  videoUrl: { type: String }
+
 }, { _id: false });
 
 const wodSchema = new Schema<IWod>({
-  title:     { type: String, required: true },
-  type:      { type: String }, 
-  duration:  { type: Number, required: true, default: 20 },
-  location:  { type: [String] },
+  title: { type: String, required: true },
+  type: { type: String },
+  duration: { type: Number, required: true, default: 20 },
+  location: { type: [String] },
   equipment: { type: [String] },
-  target:    { type: [String] },
+  target: { type: [String] },
   exercises: [exerciseSchema],
-  videoUrl:  { type: String }
+  videoUrl: { type: String }
 }, { timestamps: true });
 
 export const Wod = model<IWod>('Wod', wodSchema);
