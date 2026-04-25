@@ -34,7 +34,7 @@ export const SelectionPage = (): ReactElement | null => {
         );
     }
 
-    const { type, title, exercises, videoUrl } = selectedWod;
+    const { type, title, exercises } = selectedWod;
     const { completedExercises, expandedExercise } = workoutUI;
 
     return (
@@ -56,7 +56,7 @@ export const SelectionPage = (): ReactElement | null => {
                 expandedExercise={expandedExercise}
                 onExpand={handleExpand}
                 onToggle={toggleComplete}
-                videoUrl={videoUrl}
+                
             />
 
             {/* Sección: Botonera de Control */}
