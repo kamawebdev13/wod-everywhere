@@ -5,7 +5,7 @@ import { type GenerateWodPayload } from '@/types/training';
 
 /**
  * HOOK: useGenerateWod
- * Punto 3: Arquitectura - Encapsula la lógica de generación y navegación.
+ * Encapsula la lógica de petición al motor de generación de WODs.
  */
 export const useGenerateWod = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -13,38 +13,36 @@ export const useGenerateWod = () => {
     const navigate = useNavigate();
 
     /**
-     * Solicita al backend la generación de WODs.
+     * Solicita al backend la generación de WODs basados en los filtros.
+     * @param filters - Criterios de selección (location, equipment, target).
      */
     const getOptions = async (filters: GenerateWodPayload) => {
         setLoading(true);
-        setError(null); // Limpiamos errores previos antes de cada intento
+        setError(null);
         
         try {
-            // Punto 1: Integridad - Tipado estricto en el consumo del servicio
+            // Punto 1: Efecto de carga UX y petición en paralelo
+            // Añadimos un pequeño delay artificial para mejorar la sensación de "generación"
             const [options] = await Promise.all([
                 wodService.generate(filters),
                 new Promise(resolve => setTimeout(resolve, 1500))
             ]);
             
             if (!options || options.length === 0) {
-                throw new Error('NO_OPTIONS_FOUND');
+                throw new Error('NO_WODS_AVAILABLE');
             }
             
-            // Navegación segura con transferencia de estado
+            // Navegación hacia la pantalla de selección con el estado de los WODs
             navigate('/generated-wods', { 
                 state: { wods: options },
                 replace: true 
             });
             
-        } catch (err){
-            /**
-             * Punto 2: Robustez
-             * Seteamos el mensaje de error en el estado reactivo.
-             * La UI será la encargada de renderizar este mensaje de forma elegante.
-             */
-           const message = err instanceof Error ? err.message : 'UNKNOWN_FAILURE';
-            setError(`ENGINE_ERROR: ${message}`);
-            console.error('Error generando WOD:', message);
+        } catch (err: unknown) {
+            const message = err instanceof Error ? err.message : 'GENERATION_FAILED';
+            setError(`ENGINE_FAILURE: ${message}`);
+            
+            
         } finally {
             setLoading(false);
         }
