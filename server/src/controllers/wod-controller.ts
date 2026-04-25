@@ -1,4 +1,4 @@
-import { Wod } from "../models/wod-model"; 
+import { Wod } from "../models/wod-model";
 import type { Request, Response, NextFunction } from "express";
 
 /**
@@ -41,20 +41,33 @@ export const getWods = async (req: Request, res: Response, next: NextFunction) =
             queryFilter.target = { $in: [target] };
         }
 
-        /**
-         * EJECUCIÓN:
-         * El $match acepta el Record<string, unknown> sin problemas.
-         */
-        const results = await Wod.aggregate([
+        // Intento 1: Los 3 filtros
+        let results = await Wod.aggregate([
             { $match: queryFilter },
             { $sample: { size: 3 } }
         ]);
 
+        // Intento 2: Sin equipment
+        if (results.length === 0 && queryFilter.equipment) {
+            delete queryFilter.equipment;
+            results = await Wod.aggregate([
+                { $match: queryFilter },
+                { $sample: { size: 3 } }
+            ]);
+        }
+
+        // Intento 3: Solo location
+        if (results.length === 0 && queryFilter.target) {
+            delete queryFilter.target;
+            results = await Wod.aggregate([
+                { $match: queryFilter },
+                { $sample: { size: 3 } }
+            ]);
+        }
+
+
         if (!results || results.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No se encontraron WODs con esos criterios de búsqueda"
-            });
+            return res.status(200).json([]);
         }
 
         return res.status(200).json(results);
