@@ -50,24 +50,20 @@ export const SelectionPage = (): ReactElement | null => {
             />
 
             {/* Sección: Lista de Ejercicios (Pasamos props deconstruidas) */}
-            <div className="flex-1 overflow-y-auto px-6 py-4">
-                    <ActiveMovementsList 
-                        exercises={exercises}
-                        completedExercises={completedExercises}
-                        expandedExercise={expandedExercise}
-                        onExpand={handleExpand}
-                        onToggle={toggleComplete}
-                    />
-                </div>
+            <ActiveMovementsList 
+                exercises={exercises}
+                completedExercises={completedExercises}
+                expandedExercise={expandedExercise}
+                onExpand={handleExpand}
+                onToggle={toggleComplete}
+            />
 
             {/* Sección: Botonera de Control */}
-            <div className="px-6 pb-10 pt-4 bg-white">
-                    <WorkoutControls 
-                        isActive={isActive}
-                        onToggle={toggleTimer}
-                        onFinish={handleFinish}
-                    />
-                </div>
+            <WorkoutControls 
+                isActive={isActive}
+                onToggle={toggleTimer}
+                onFinish={handleFinish}
+            />
             
         </div>
     );
