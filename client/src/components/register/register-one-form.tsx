@@ -34,7 +34,7 @@ export const RegisterOneForm = ({
     onSubmit
 }: RegisterFormProps) => (
     <form onSubmit={onSubmit} className="flex flex-col gap-6">
-        
+
         {/* SECCIÓN: Nombre Completo */}
         <div className="space-y-1.5 text-left">
             <label className="text-[10px] font-bold text-black uppercase tracking-[0.2em]">
@@ -109,12 +109,15 @@ export const RegisterOneForm = ({
         </div>
 
         {/* ACCIÓN: Botón de envío - Estado deshabilitado calculado en el Hook */}
-        <Button
-            type="submit"
-            disabled={isSubmitDisabled}
-            className="w-full h-16 bg-[#1A1A1A] hover:bg-black text-white rounded-sm font-bold uppercase tracking-[0.2em] text-xs flex items-center justify-center gap-3 mt-4 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
-        >
-            NEXT <ArrowRight size={18} />
-        </Button>
+        <div className="pt-6 flex justify-center">
+            <Button
+                type="submit"
+                disabled={isSubmitDisabled}
+                className="h-16 px-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center"
+            >
+                NEXT <ArrowRight size={18} />
+            </Button>
+        </div>
+
     </form>
 );

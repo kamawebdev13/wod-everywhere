@@ -10,11 +10,11 @@ interface RegisterTwoFooterProps {
 /**
  * Footer del registro. Gestiona el feedback de errores y la acción principal.
  */
-export const RegisterTwoFooter = ({ 
-    isLoading, 
-    error, 
-    isButtonDisabled, 
-    onSubmit 
+export const RegisterTwoFooter = ({
+    isLoading,
+    error,
+    isButtonDisabled,
+    onSubmit
 }: RegisterTwoFooterProps) => (
     <footer className="mt-auto space-y-4">
         {error && (
@@ -22,14 +22,16 @@ export const RegisterTwoFooter = ({
                 {error}
             </p>
         )}
+        <div className="pt-6 flex justify-center">
+            <Button
+                onClick={onSubmit}
+                disabled={isButtonDisabled}
+                className="h-16 px-16 bg-[#1A1A1A] hover:bg-black text-white text-[16px] font-black uppercase tracking-[0.15em] shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all flex items-center justify-center"
+            >
+                {isLoading ? 'CREATING PROFILE...' : 'CREATE PROFILE'}
+            </Button>
+        </div>
 
-        <Button
-            onClick={onSubmit}
-            disabled={isButtonDisabled}
-            className="w-full h-16 bg-[#1A1A1A] hover:bg-black text-white rounded-md font-black uppercase tracking-widest text-[16px] shadow-xl"
-        >
-            {isLoading ? 'CREATING PROFILE...' : 'CREATE PROFILE'}
-        </Button>
 
         <p className="text-[10px] text-gray-400 font-bold text-center leading-tight tracking-widest px-4 uppercase">
             By creating a profile you agree to our <span className="underline text-black">Terms of Service</span>
