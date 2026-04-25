@@ -15,23 +15,31 @@ interface WorkoutControlsProps {
  * Botones persistente con desenfoque de fondo para control de sesión.
  */
 export const WorkoutControls = ({ isActive, onToggle, onFinish }: WorkoutControlsProps) => (
-    <footer className="fixed bottom-0 left-0 right-0 p-6 bg-white/90 backdrop-blur-md flex gap-4 z-30 border-t border-zinc-100">
+    /* CAMBIO CLAVE sugerido por GEMINI: 
+       1. Quitamos fixed, left-0, right-0. 
+       2. Usamos w-full para que ocupe el ancho del contenedor max-w-md.
+       3. Quitamos bg-white/90 para que no se vea doble fondo si ya hay uno en el padre.
+    */
+    <footer className="w-full p-4 flex gap-4 z-30 bg-white">
         <Button 
             onClick={onToggle}
-            className="flex-1 h-14 bg-zinc-100 text-zinc-950 font-bold uppercase tracking-widest text-[10px] rounded-xl"
+            
+            className="flex-1 h-16 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 font-bold uppercase tracking-widest text-[11px] rounded-2xl flex items-center justify-center transition-colors"
             aria-label={isActive ? "Pausar entrenamiento" : "Reanudar entrenamiento"}
         >
             {isActive ? (
-                <><Pause className="mr-2" size={16} /> Pause</>
+                <><Pause size={18} className="mr-2" /> PAUSE</>
             ) : (
-                <><Play className="mr-2" size={16} /> Resume</>
+                <><Play size={18} className="mr-2" /> RESUME</>
             )}
         </Button>
+
         <Button 
             onClick={onFinish}
-            className="flex-1 h-14 bg-zinc-950 text-white font-bold uppercase tracking-widest text-[10px] rounded-xl shadow-lg active:scale-95 transition-transform"
+            
+            className="flex-1 h-16 bg-zinc-950 hover:bg-zinc-900 text-white font-bold uppercase tracking-widest text-[11px] rounded-2xl shadow-xl active:scale-95 transition-transform flex items-center justify-center"
         >
-            <Flag className="mr-2" size={16} /> Finish
+            <Flag size={18} className="mr-2" /> FINISH
         </Button>
     </footer>
 );

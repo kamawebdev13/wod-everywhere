@@ -14,49 +14,48 @@ import { ResumeMotivation } from '@/components/resume/resume-motivation';
  * Muestra el resultado de la sesión y gestiona el feedback de persistencia.
  */
 export const ResumeWodPage = (): ReactElement | null => {
-    // 1. Extraemos lógica, estados y el nuevo syncError del Hook
-    const { 
-        state, 
-        notes, 
-        setNotes, 
-        loading, 
-        syncError, 
-        progressPercentage, 
-        handleSave 
-    } = useResumeWod();
+  // 1. Extraemos lógica, estados y el nuevo syncError del Hook
+  const {
+    state,
+    notes,
+    setNotes,
+    loading,
+    syncError,
+    progressPercentage,
+    handleSave
+  } = useResumeWod();
 
-    // 2. Renderizado condicional de seguridad
-    if (!state?.selectedWod) return null;
+  // 2. Renderizado condicional de seguridad
+  if (!state?.selectedWod) return null;
 
-   return (
-    /* 1. CONTENEDOR EXTERIOR: Centra todo el contenido en pantallas grandes */
+  return (
+
     <div className="min-h-screen bg-[#F8F9FA] flex justify-center">
-      
-      /* 2. CONTENEDOR DE CONTENCIÓN: Limita el ancho máximo a 448px (max-w-md) */
+
+
       <div className="w-full max-w-md flex flex-col min-h-screen relative shadow-2xl bg-white">
-        
-        /* Contenido con scroll independiente si fuera necesario */
-        <div className="flex-1 pb-32"> 
-          
+
+        <div className="flex-1 pb-32">
+
           {/* Header de la página */}
           <ResumeHeader />
-          
+
           {/* Card del temporizador con el tiempo transcurrido */}
           <ResumeTimerCard time={state.timeSpent} />
 
-          {/* Sección de estadísticas: Usamos gap-4 para separar las cards */}
+          {/* Sección de estadísticas */}
           <section className="px-6 mt-4 flex gap-4">
-            <StatCard 
-              label="Completado" 
-              value={`${progressPercentage}%`} 
-              variant="dark" 
+            <StatCard
+              label="Completado"
+              value={`${progressPercentage}%`}
+              variant="dark"
               className="flex-1"
               icon={<CheckCircle2 size={40} />}
             />
-            <StatCard 
-              label="Workout" 
-              value={state.selectedWod.title} 
-              className="flex-2" 
+            <StatCard
+              label="Workout"
+              value={state.selectedWod.title}
+              className="flex-2"
             />
           </section>
 
@@ -90,7 +89,7 @@ export const ResumeWodPage = (): ReactElement | null => {
           )}
         </div>
 
-        /* 3. FOOTER FIJO: El botón ahora siempre estará al final del contenedor max-w-md */
+       
         <footer className="absolute bottom-0 left-0 w-full px-6 pb-10 bg-gradient-to-t from-[#F8F9FA] to-transparent pt-10">
           <Button
             onClick={handleSave}
