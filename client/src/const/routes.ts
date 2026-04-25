@@ -14,6 +14,7 @@ export const ROUTES = {
   HISTORY: '/history',       // Historial de sesiones
   WORKOUT: '/workout/:id',   // Vista de un WOD específico
   PROFILE: '/profile',       // Perfil de usuario
+  SETTINGS: '/settings-page', // Configuración perfil de usuario
   
   // --- Flujo de Generación y Motor (Nuevas) ---
   EXPLORE: '/explore',              // Configuración de filtros

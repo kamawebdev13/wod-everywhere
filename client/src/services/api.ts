@@ -66,6 +66,24 @@ export const authService = {
     });
   },
 
+  /**
+     * Obtiene el perfil completo del usuario autenticado.
+     * El tipo IAuthResponse['user'] asegura que recibimos los datos del atleta.
+     */
+    getProfile: async (): Promise<IAuthResponse['user']> => {
+        return request<IAuthResponse['user']>("/auth/profile");
+    },
+
+    /**
+     * Actualiza datos del perfil (nombre, nivel, etc.)
+     */
+    updateProfile: async (updates: Partial<IAuthResponse['user']>): Promise<IAuthResponse['user']> => {
+        return request<IAuthResponse['user']>("/auth/profile", {
+            method: "PATCH",
+            body: JSON.stringify(updates),
+        });
+    },
+
     logout: () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");

@@ -1,5 +1,6 @@
 import { type ReactElement } from 'react';
 import { Menu, History, LogOut, Settings, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * INTERFAZ: NavbarProps
@@ -18,18 +19,21 @@ interface NavbarProps {
  * Encabezado persistente con sistema de navegación rápida y menú de configuración.
  * 
  */
-export const Navbar = ({ 
-    onMenuClick, 
-    onHistoryClick, 
-    isMenuOpen, 
-    onCloseMenu, 
-    onLogout 
+export const Navbar = ({
+    onMenuClick,
+    onHistoryClick,
+    isMenuOpen,
+    onCloseMenu,
+    onLogout
 }: NavbarProps): ReactElement => {
+
+    const navigate = useNavigate();
+
     return (
         <header className="w-full h-16 flex items-center justify-between px-6 bg-white border-b border-zinc-100 sticky top-0 z-[100]">
-            
+
             {/* ACCIÓN: Toggle Menú Configuración */}
-            <button 
+            <button
                 onClick={onMenuClick}
                 className="text-zinc-950 hover:opacity-70 transition-all p-1 z-50 cursor-pointer"
                 aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú de configuración"}
@@ -44,7 +48,7 @@ export const Navbar = ({
             </div>
 
             {/* ACCIÓN: Navegación al Historial */}
-            <button 
+            <button
                 onClick={onHistoryClick}
                 className="text-zinc-950 hover:opacity-70 transition-opacity p-1 cursor-pointer"
                 aria-label="Ver historial de entrenamientos"
@@ -56,28 +60,32 @@ export const Navbar = ({
             {isMenuOpen && (
                 <>
                     {/* OVERLAY: Fondo para cerrar el menú al hacer clic fuera */}
-                    <div 
-                        className="fixed inset-0 bg-black/5 z-80 backdrop-blur-[1px] animate-in fade-in duration-300" 
+                    <div
+                        className="fixed inset-0 bg-black/5 z-80 backdrop-blur-[1px] animate-in fade-in duration-300"
                         onClick={onCloseMenu}
                     />
-                    
+
                     {/* PANEL DE OPCIONES: Posicionamiento absoluto relativo al header */}
                     <div className="absolute top-[110%] left-6 w-60 bg-white border border-zinc-100 rounded-2xl shadow-2xl z-[90] overflow-hidden animate-in fade-in slide-in-from-top-4 duration-300">
                         <div className="p-2.5">
+                            
                             {/* Opción: Configuración */}
-                            <button 
-                                className="w-full flex items-center gap-3 px-4 py-4 text-sm font-semibold text-zinc-600 hover:bg-zinc-50 rounded-xl transition-colors cursor-pointer outline-none"
-                                onClick={() => { onCloseMenu(); }}
+                            <button
+                                className="w-full flex items-center gap-3 px-4 py-4 text-sm font-semibold text-zinc-600 hover:bg-zinc-50 rounded-xl transition-colors cursor-pointer outline-none group"
+                                onClick={() => {
+                                    navigate('/settings');
+                                    onCloseMenu();         // Cierra el menú lateral
+                                }}
                             >
-                                <Settings size={18} />
+                                <Settings size={18} className="group-hover:rotate-45 transition-transform duration-300" />
                                 Configuración
                             </button>
-                            
+
                             {/* Separador visual */}
                             <div className="h-px bg-zinc-100 my-1.5 mx-2" />
-                            
+
                             {/* Opción: Logout */}
-                            <button 
+                            <button
                                 className="w-full flex items-center gap-3 px-4 py-4 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer outline-none"
                                 onClick={onLogout}
                             >

@@ -19,6 +19,7 @@ const RegisterOnePage = lazy(() => import('@/pages/register-one-page'));
 const RegisterTwoPage = lazy(() => import('@/pages/register-two-page'));
 const HomePage = lazy(() => import('@/pages/home-page'));
 const ProfilePage = lazy(() => import('@/pages/profile-page'));
+const SettingsPage = lazy(() => import('@/pages/settings-page'));
 const HistoryPage = lazy(() => import('@/pages/history-page'));
 const ExplorePage = lazy(() => import('@/pages/explore-page'));
 const GeneratedWodsPage = lazy(() => import('@/pages/generated-wods'));
@@ -57,6 +58,8 @@ function App() {
                                 <Route path={ROUTES.EXPLORE} element={<ExplorePage />} />
                                 <Route path={ROUTES.GENERATED_WODS} element={<GeneratedWodsPage />} />
                                 <Route path={ROUTES.SUMMARY} element={<ResumeWodPage />} />
+                                <Route path={ROUTES.SETTINGS} element={<SettingsPage />} />
+                                
                             </Route>
 
                             {/* PANTALLA COMPLETA (Sin Navbar/Tabbar)
