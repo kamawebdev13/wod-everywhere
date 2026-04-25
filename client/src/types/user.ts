@@ -10,7 +10,7 @@ export interface IUserStats {
 }
 
 /**
- * INTERFAZ: UserSettings
+ * INTERFAZ: IUser
  * Representa al usuario autenticado en el Frontend.
  */
 export interface IUser {
