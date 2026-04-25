@@ -28,7 +28,7 @@ export const SelectionPage = (): ReactElement | null => {
     // 2. Punto 2 (Robustez): Si no hay WOD por refresco de página, evitamos crash
    if (!selectedWod) {
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="min-h-screen bg-zinc-50 flex justify-center overflow-hidden">
             <p className="text-white animate-pulse">PREPARANDO ENTRENAMIENTO...</p>
         </div>
     );
@@ -38,7 +38,7 @@ export const SelectionPage = (): ReactElement | null => {
     const { completedExercises, expandedExercise } = workoutUI;
 
     return (
-        <div className="flex flex-col h-screen bg-white animate-fade-in overflow-hidden">
+        <div className="flex flex-col h-screen w-full max-w-md bg-white animate-fade-in relative shadow-xl">
             
             {/* Sección: Timer y Título */}
             <SelectionHeader 
@@ -59,11 +59,13 @@ export const SelectionPage = (): ReactElement | null => {
             />
 
             {/* Sección: Botonera de Control */}
-            <WorkoutControls 
-                isActive={isActive}
-                onToggle={toggleTimer}
-                onFinish={handleFinish}
-            />
+            <div className="px-6 pb-10 pt-4 bg-white">
+                    <WorkoutControls 
+                        isActive={isActive}
+                        onToggle={toggleTimer}
+                        onFinish={handleFinish}
+                    />
+                </div>
             
         </div>
     );
