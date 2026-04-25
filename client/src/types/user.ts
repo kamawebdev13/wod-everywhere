@@ -1,7 +1,7 @@
-// Define el nivel del atleta para un tipado estricto
-
+// 1. Tipado estricto para los niveles 
 export type AthleteLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ELITE';
 
+// 2. Interfaz para las estadísticas (Muy útil para las gráficas del Profile)
 export interface IUserStats {
   wodsCompleted: number;
   currentStreak: number;
@@ -9,14 +9,17 @@ export interface IUserStats {
   prsThisMonth: number;
 }
 
+/**
+ * INTERFAZ: UserSettings
+ * Representa al usuario autenticado en el Frontend.
+ */
 export interface UserSettings {
-    id: string;
-      email: string;
-      name: string;
-      role: 'user' | 'admin';
-      avatarUrl?: string;       // Foto subida por el usuario
-      level: 'BEGINNER' | 'INTERMEDIATE' | 'ELITE';         
-      tags: string[];         
-      stats: IUserStats;       
-  
+  id: string;
+  email: string;
+  name: string;
+  role: 'user' | 'admin';
+  avatarUrl?: string; // URL de Supabase Storage
+  level: AthleteLevel; // REUTILIZAMOS el tipo definido arriba
+  tags: string[];      
+  stats: IUserStats;   
 }
