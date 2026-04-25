@@ -13,7 +13,7 @@ export interface IUserStats {
  * INTERFAZ: UserSettings
  * Representa al usuario autenticado en el Frontend.
  */
-export interface UserSettings {
+export interface IUser {
   id: string;
   email: string;
   name: string;
