@@ -35,9 +35,8 @@ export const useLogin = () => {
             // 3. Ejecución de la lógica de negocio (Sincronizada con el Backend)
             await auth.login(email, password);
             // 4. Redirección basada en el mapa de rutas centralizado
-            setTimeout(() => {
-                navigate(ROUTES.HOME);
-            }, 100);
+            navigate(ROUTES.HOME);
+
         } catch (err) {
             // 5. Gestión robusta de errores: Extrae el mensaje real del servidor si existe
             const msg = err instanceof Error ? err.message : 'ACCESS DENIED. CHECK YOUR ENGINE CODE.';
