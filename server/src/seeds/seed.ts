@@ -89,26 +89,28 @@ const wods = [
         type: "AMRAP 15",
         duration: 15,
         location: ["mountains", "outdoor"],
-        equipment: ["none"],
+        equipment: ["none", "bodyweight"],
         target: ["cardio", "fullbody"],
         exercises: [
             { name: "Jumping Jacks", reps: 50, weight: "Bodyweight" },
             { name: "Burpees", reps: 10, weight: "Bodyweight" },
             { name: "High Knees", reps: 40, weight: "Bodyweight" }
-        ]
+        ],
+        videoUrl: "https://www.youtube.com/embed/ml6cT4AZdqI"
     },
     {
         title: "Ocean Core",
         type: "3 Rounds",
         duration: 10,
         location: ["beach", "outdoor"],
-        equipment: ["none"],
+        equipment: ["none", "bodyweight"],
         target: ["core"],
         exercises: [
             { name: "Plank", reps: 1, weight: "60s" },
             { name: "V-up", reps: 15, weight: "Bodyweight" },
             { name: "Hollow Body Hold", reps: 1, weight: "30s" }
-        ]
+        ],
+        videoUrl: "https://www.youtube.com/embed/DHD1-2P94DI"
     },
     {
         title: "Kettlebell Power",
@@ -120,7 +122,8 @@ const wods = [
         exercises: [
             { name: "Kettlebell Swing", reps: 15, weight: "16kg" },
             { name: "Goblet Squat", reps: 12, weight: "16kg" }
-        ]
+        ],
+        videoUrl: "https://www.youtube.com/embed/sSESeQAir2M"
     },
     {
         title: "Street Workout Pro",
@@ -133,7 +136,8 @@ const wods = [
             { name: "Muscle-up", reps: 3, weight: "Bodyweight" },
             { name: "Dip en paralelas", reps: 10, weight: "Bodyweight" },
             { name: "Chin-up", reps: 8, weight: "Bodyweight" }
-        ]
+        ],
+        videoUrl: "https://www.youtube.com/embed/19-SScBTMRU"
     },
     {
         title: "Heavy Metal Cross",
@@ -146,10 +150,10 @@ const wods = [
             { name: "Thruster", reps: 15, weight: "40kg" },
             { name: "Box Jump", reps: 15, weight: "60cm" },
             { name: "Power Clean", reps: 10, weight: "50kg" }
-        ]
+        ],
+        videoUrl: "https://www.youtube.com/embed/L219gBDGBCg"
     }
 ];
-
 const users = [
     { email: 'admin@wodeverywhere.com', password: 'Admin1234!' },
     { email: 'test@wodeverywhere.com', password: 'Test1234!' },
