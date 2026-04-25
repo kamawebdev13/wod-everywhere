@@ -2,6 +2,7 @@ import { type ReactElement } from 'react';
 import { User, Shield, Bell, LogOut } from 'lucide-react';
 import { useSettings } from '@/hooks/use-settings';
 import { SettingsTile } from '@/components/settings/settings-tile';
+import { type IUser, type AthleteLevel } from '@/types';
 
 
 /**
@@ -9,13 +10,25 @@ import { SettingsTile } from '@/components/settings/settings-tile';
  * Refactorizada bajo principios de arquitectura modular y rúbrica estricta.
  */
 export const SettingsPage = (): ReactElement => {
-    const { user, loading, handleLogout } = useSettings();
+    const { user, loading, handleLogout, updateUserInfo } = useSettings();
     
     // 1. Protección contra el estado de carga
     if (loading) {
         return <div className="p-6 uppercase font-black italic animate-pulse">Loading Profile...</div>;
     }
+    if (!user) return <></>;
 
+      /**
+     * Cicla entre los niveles del atleta al hacer clic.
+     */
+    const toggleLevel = (): void => {
+        const levels: AthleteLevel[] = ['BEGINNER', 'INTERMEDIATE', 'ELITE'];
+    const currentIndex = levels.indexOf(user.level as AthleteLevel);
+    const nextIndex = (currentIndex + 1) % levels.length;
+        
+        // Enviamos el cambio al backend
+        updateUserInfo({ level: levels[nextIndex] });
+    };  
     // 2. Protección contra null (Type Guard)
     // Si llegamos aquí, TypeScript ya sabe que 'user' no es null
     if (!user) return <div className="p-6">Error: User not found</div>;
@@ -32,8 +45,24 @@ export const SettingsPage = (): ReactElement => {
                 {/* Bloque: Perfil */}
                 <section>
                     <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-red-600 mb-4">Athlete Profile</h3>
-                    <SettingsTile label="Name" value={user.name} icon={<User size={18} />} />
-                    <SettingsTile label="Level" value={user.level} icon={<Shield size={18} />} onClick={() => {}} />
+                   {/* El nombre ahora podría abrir un prompt para editarlo */}
+                    <SettingsTile 
+                        label="Name" 
+                        value={user.name} 
+                        icon={<User size={18} />} 
+                        onClick={() => {
+                            const newName = prompt("Enter new name:", user.name);
+                            if (newName) updateUserInfo({ name: newName });
+                        }}
+                    />
+
+                    {/* El nivel ahora cambia con cada clic */}
+                    <SettingsTile 
+                        label="Level" 
+                        value={user.level} 
+                        icon={<Shield size={18} />} 
+                        onClick={toggleLevel} 
+                    />
                 </section>
 
                 {/* Bloque: Sistema */}
