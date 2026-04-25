@@ -26,7 +26,13 @@ export const SelectionPage = (): ReactElement | null => {
     } = useSelection();
 
     // 2. Punto 2 (Robustez): Si no hay WOD por refresco de página, evitamos crash
-    if (!selectedWod) return null;
+   if (!selectedWod) {
+    return (
+        <div className="min-h-screen bg-black flex items-center justify-center">
+            <p className="text-white animate-pulse">PREPARANDO ENTRENAMIENTO...</p>
+        </div>
+    );
+}
 
     const { type, title, exercises } = selectedWod;
     const { completedExercises, expandedExercise } = workoutUI;

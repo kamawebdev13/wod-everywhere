@@ -63,6 +63,7 @@ function App() {
                                 Se mantiene fuera de MainLayout para enfoque total en el WOD.
                             */}
                             <Route path={ROUTES.SELECTION} element={<SelectionPage />} />
+                            <Route path="/stats" element={<Navigate to={ROUTES.HOME} replace />} />
 
                         </Route>
 
