@@ -13,6 +13,11 @@ import { User } from '../models/user-model';
 dotenv.config();
 // ─── Seed exercises: Aqui sembramos nuestra database con toda la coleccion de ejercicios posibles
 
+// **
+//  * Inicialización del logger de debug.
+//  * Se asegura que 'log' esté disponible en el scope superior.
+//  */
+const log: debug.Debugger = debug('app:seed');
 
 const wods = [
     {
@@ -159,46 +164,48 @@ const users = [
     { email: 'test@wodeverywhere.com', password: 'Test1234!' },
     { email: 'athlete@wodeverywhere.com', password: 'Athlete1234!' }
 ];
-
-// ─── Sembrado de la base de datos ─────────────────────────────────────────────────────────────
-// Inicializamos el logger de debug con un namespace específico
-const log = debug('app:seed');
-
-const seed = async () => {
+/**
+ * PROCESO DE SEMBRADO: seed
+ * Limpia y repuebla la base de datos con datos de prueba estructurados.
+ */
+const seed = async (): Promise<void> => {
     try {
         await connectDB();
+        log('Database connected.');
 
-        log('Seeding database...');
-
-        //1. Limpieza de datos
+        // 1. Limpieza de colecciones existentes
         await Wod.deleteMany({});
         await Workout.deleteMany({});
         await User.deleteMany({});
+        log('Collections cleared.');
 
-        // 2. Inserción de WODs
+        // 2. Inserción de WODs variados
         await Wod.insertMany(wods);
-        log('%d WODs inserted successfully', wods.length);
+        log('%d WODs inserted.', wods.length);
 
-        // 3. Inserción de Usuarios con encriptado de contraseña del usuario
-        for (const userData of users) {
-            const hashed = await bcrypt.hash(userData.password, 10);
-            await User.create({
-                name: userData.email.split('@')[0], // nombre temporal
-                email: userData.email,
-                password: hashed
-            });
-        }
-        log('%d users inserted successfully', users.length);
+        // 3. Creación de usuario de prueba con perfil de atleta
+        const hashedPassword = await bcrypt.hash('Test1234!', 10);
+        await User.create({
+            name: 'Athlete One',
+            email: 'test@wodeverywhere.com',
+            password: hashedPassword,
+            level: 'INTERMEDIATE',
+            tags: ['STRENGTH', 'ENGINE'],
+            stats: { wodsCompleted: 0 }
+        });
+        log('Test user created.');
 
-        log('Test credentials ready for: admin@wodeverywhere.com, test@wodeverywhere.com, athlete@wodeverywhere.com');
+        log('SEED COMPLETED SUCCESSFULLY');
 
+        // Cierre de conexión y salida limpia
         await mongoose.connection.close();
         process.exit(0);
 
-    } catch (error) {
-        log('Error seeding database: %O', error);
+    } catch (error: unknown) {
+        log('Seed error: %O', error);
         process.exit(1);
     }
 };
 
+// Ejecución del script
 void seed();

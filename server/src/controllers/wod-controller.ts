@@ -1,46 +1,55 @@
-import { Wod } from "../models/wod-model";
+import { Wod } from "../models/wod-model"; 
 import type { Request, Response, NextFunction } from "express";
 
 /**
+ * INTERFAZ: WodFilters
+ * Criterios que llegan desde el frontend.
+ */
+interface WodFilters {
+    location?: string;
+    equipment?: string;
+    target?: string;
+}
+
+/**
  * CONTROLADOR: getWods
- * Punto 1: Robustez - Maneja filtros dinámicos y evita errores de tipos en MongoDB.
+ * Selección aleatoria con filtros dinámicos compatibles con Arrays en DB.
  */
 export const getWods = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        /**
-         * Punto 2: Flexibilidad 
-         * Extraemos los filtros tanto de query (GET) como de body (POST) 
-         * para asegurar compatibilidad con el frontend.
-         */
-        const { location, equipment, target } = { ...req.query, ...req.body };
+        const { location, equipment, target }: WodFilters = { ...req.query, ...req.body };
 
-        // Definimos un objeto de filtro con tipado seguro
+        /**
+         * SOLUCIÓN AL TIPO:
+         * Usamos 'Record<string, unknown>' para permitir que los valores sean
+         * tanto strings simples como objetos complejos de MongoDB ($in).
+         */
         const queryFilter: Record<string, unknown> = {};
 
-        /**
-         * Lógica de Filtrado Dinámico:
-         * Solo agregamos el filtro si el valor existe y no es 'all'.
-         * Usamos comparaciones directas en lugar de $in para mayor eficiencia.
-         */
+        // Filtro de Ubicación: Usamos $in porque en el seed 'location' es un Array
         if (location && location !== 'all') {
-            queryFilter.location = location;
+            queryFilter.location = { $in: [location] };
         }
 
+        // Filtro de Equipamiento
         if (equipment && equipment !== 'all') {
-            queryFilter.equipment = equipment;
+            queryFilter.equipment = { $in: [equipment] };
         }
 
+        // Filtro de Target
         if (target && target !== 'all') {
-            queryFilter.target = target;
+            queryFilter.target = { $in: [target] };
         }
-
-        // Ejecución de la consulta con el filtro construido
-        const results = await Wod.find(queryFilter);
 
         /**
-         * Manejo de Resultados Vacíos:
-         * Si no hay coincidencias, devolvemos 404 con un mensaje claro.
+         * EJECUCIÓN:
+         * El $match acepta el Record<string, unknown> sin problemas.
          */
+        const results = await Wod.aggregate([
+            { $match: queryFilter },
+            { $sample: { size: 3 } }
+        ]);
+
         if (!results || results.length === 0) {
             return res.status(404).json({
                 success: false,
@@ -48,18 +57,9 @@ export const getWods = async (req: Request, res: Response, next: NextFunction) =
             });
         }
 
-        /**
-         * Punto 3: Experiencia de Usuario
-         * Mezclamos los resultados de forma aleatoria y tomamos los 3 mejores.
-         */
-        const shuffled = [...results]
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 3);
-
-        return res.status(200).json(shuffled);
+        return res.status(200).json(results);
 
     } catch (error: unknown) {
-        // Delegamos el error al middleware global de la aplicación
         next(error);
     }
 };
