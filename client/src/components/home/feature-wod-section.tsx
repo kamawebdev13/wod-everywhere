@@ -31,17 +31,17 @@ export const FeaturedWodSection = ({
 
     return (
         <section className="px-6 -mt-4 mb-8">
-            <div className="relative bg-white border-2 border-red-700 p-8 shadow-2xl overflow-hidden">
+            <div className="relative bg-white border-2 border-red-700 p-6 shadow-2xl overflow-hidden">
                 <div className="absolute top-0 right-0 text-[180px] font-black text-gray-50 opacity-10 select-none leading-none -mr-10">
                     X
                 </div>
                 
-                <div className="relative z-10 text-left w-full">
+                <div className="relative z-10 text-left">
                     <span className="inline-block bg-red-100 text-red-800 text-[10px] font-black px-3 py-1 uppercase tracking-tighter mb-6">
                         FEATURED WORKOUT
                     </span>
                     
-                    <h2 className="text-5xl md:text-7xl font-black text-black italic uppercase leading-[0.9] mb-10 tracking-tighter break-all block w-full">
+                    <h2 className="text-5xl font-black text-black italic uppercase leading-[0.9] mb-10 tracking-tighter break-words">
                         {loading ? "..." : wodTitle}
                     </h2>
                     
